@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Salida - Parrilla 51</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2f2f2f 0%, #3a3a3a 100%);
+            color: #f0f0f0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #1f1f1f 0%, #2f2f2f 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 3px solid #ff4444;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .header h1 {
+            color: #ff4444;
+            font-size: 32px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .form-card {
+            background: linear-gradient(135deg, #2f2f2f 0%, #1f1f1f 100%);
+            border-radius: 15px;
+            padding: 35px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            border: 3px solid #ff4444;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ff4444, #ffd700, #ff4444);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .form-group label i {
+            margin-right: 8px;
+            color: #ff4444;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ff4444;
+            border-radius: 8px;
+            background: #3a3a3a;
+            color: #f0f0f0;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ff6666;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+            background: #2f2f2f;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .required {
+            color: #ff4444;
+            margin-left: 5px;
+        }
+
+        .warning-box {
+            background: rgba(255, 68, 68, 0.1);
+            border: 2px solid #ff4444;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+
+        .warning-box i {
+            color: #ff4444;
+            margin-right: 10px;
+        }
+
+        .warning-box p {
+            color: #f0f0f0;
+            margin: 0;
+        }
+
+        .stock-alert {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .stock-alert.show {
+            display: block;
+        }
+
+        .stock-alert strong {
+            color: #ffc107;
+        }
+
+        .stock-alert.danger {
+            background: rgba(220, 53, 69, 0.1);
+            border-color: #dc3545;
+        }
+
+        .stock-alert.danger strong {
+            color: #dc3545;
+        }
+
+        .motivo-merma {
+            display: none;
+        }
+
+        .motivo-merma.show {
+            display: block;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 35px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #c82333 0%, #dc3545 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(220, 53, 69, 0.5);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #5a6268 0%, #6c757d 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-arrow-circle-down"></i> Registrar Salida de Inventario</h1>
+        </div>
+
+        <div class="warning-box">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p><strong>Atención:</strong> Registre aquí las salidas de productos (ventas, mermas, devoluciones). 
+            El stock se reducirá automáticamente.</p>
+        </div>
+
+        <form method="POST" class="form-card" id="salidaForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="cod_producto">
+                        <i class="fas fa-box"></i> Producto <span class="required">*</span>
+                    </label>
+                    <select id="cod_producto" name="cod_producto" required>
+                        <option value="">Seleccione un producto</option>
+                        {% for p in productos %}
+                        <option value="{{ p.id_producto }}" data-stock="{{ p.cantidad }}">
+                            {{ p.nombre }} (Disponible: {{ p.cantidad }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="stock-alert" id="stockAlert">
+                        <strong>Stock disponible:</strong> <span id="stockDisponible">0</span> unidades
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cantidad">
+                        <i class="fas fa-sort-numeric-down"></i> Cantidad <span class="required">*</span>
+                    </label>
+                    <input type="number" id="cantidad" name="cantidad" min="1" required 
+                           placeholder="Ingrese la cantidad">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="tipo_salida">
+                        <i class="fas fa-list"></i> Tipo de Salida <span class="required">*</span>
+                    </label>
+                    <select id="tipo_salida" name="tipo_salida" required>
+                        <option value="">Seleccione un tipo</option>
+                        <option value="venta">💰 Venta</option>
+                        <option value="merma">⚠️ Merma</option>
+                        <option value="devolucion">↩️ Devolución</option>
+                        <option value="ajuste">🔧 Ajuste de inventario</option>
+                    </select>
+                </div>
+
+                <div class="form-group motivo-merma" id="motivoMermaGroup">
+                    <label for="motivo_merma">
+                        <i class="fas fa-exclamation-circle"></i> Motivo de Merma <span class="required">*</span>
+                    </label>
+                    <select id="motivo_merma" name="motivo_merma">
+                        <option value="">Seleccione un motivo</option>
+                        <option value="vencido">🗓️ Producto vencido</option>
+                        <option value="dañado">💔 Producto dañado</option>
+                        <option value="desperdicio">🗑️ Desperdicio</option>
+                        <option value="otro">❓ Otro</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="numero_lote">
+                    <i class="fas fa-barcode"></i> Número de Lote (opcional)
+                </label>
+                <input type="text" id="numero_lote" name="numero_lote" 
+                       placeholder="Ej: LOTE-2025-001">
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion_salida">
+                    <i class="fas fa-comment-dots"></i> Descripción / Observaciones <span class="required">*</span>
+                </label>
+                <textarea id="descripcion_salida" name="descripcion_salida" required
+                          placeholder="Describa el motivo o detalles de esta salida..."></textarea>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary" id="btnSubmit">
+                    <i class="fas fa-save"></i> Registrar Salida
+                </button>
+                <a href="{{ url_for('admin.admin_salidas') }}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> historial
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const productoSelect = document.getElementById('cod_producto');
+        const cantidadInput = document.getElementById('cantidad');
+        const stockAlert = document.getElementById('stockAlert');
+        const stockDisponible = document.getElementById('stockDisponible');
+        const tipoSalidaSelect = document.getElementById('tipo_salida');
+        const motivoMermaGroup = document.getElementById('motivoMermaGroup');
+        const motivoMermaSelect = document.getElementById('motivo_merma');
+        const form = document.getElementById('salidaForm');
+        
+        let stockActual = 0;
+
+        // Mostrar/ocultar motivo de merma
+        tipoSalidaSelect.addEventListener('change', function() {
+            if (this.value === 'merma') {
+                motivoMermaGroup.classList.add('show');
+                motivoMermaSelect.required = true;
+            } else {
+                motivoMermaGroup.classList.remove('show');
+                motivoMermaSelect.required = false;
+                motivoMermaSelect.value = '';
+            }
+        });
+
+        // Mostrar stock al seleccionar producto
+        productoSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            if (selectedOption.value) {
+                stockActual = parseInt(selectedOption.getAttribute('data-stock'));
+                stockDisponible.textContent = stockActual;
+                stockAlert.classList.add('show');
+                
+                if (stockActual === 0) {
+                    stockAlert.classList.add('danger');
+                    stockAlert.innerHTML = '<strong>⚠️ Sin stock disponible</strong>';
+                    cantidadInput.max = 0;
+                    cantidadInput.value = '';
+                } else {
+                    stockAlert.classList.remove('danger');
+                    cantidadInput.max = stockActual;
+                }
+            } else {
+                stockAlert.classList.remove('show');
+            }
+        });
+
+        // Validar cantidad vs stock
+        cantidadInput.addEventListener('input', function() {
+            const cantidad = parseInt(this.value);
+            
+            if (cantidad > stockActual) {
+                stockAlert.classList.add('danger');
+                stockAlert.innerHTML = `<strong>⚠️ Cantidad excede el stock disponible (${stockActual} unidades)</strong>`;
+            } else if (cantidad > 0) {
+                stockAlert.classList.remove('danger');
+                stockAlert.innerHTML = `<strong>Stock disponible:</strong> ${stockActual} unidades`;
+            }
+        });
+
+        // Validación antes de enviar
+        form.addEventListener('submit', function(e) {
+            const cantidad = parseInt(cantidadInput.value);
+            
+            if (cantidad <= 0) {
+                e.preventDefault();
+                alert('❌ La cantidad debe ser mayor a 0');
+                return false;
+            }
+            
+            if (cantidad > stockActual) {
+                e.preventDefault();
+                alert(`❌ No hay suficiente stock. Disponible: ${stockActual} unidades`);
+                return false;
+            }
+
+            if (tipoSalidaSelect.value === 'merma' && !motivoMermaSelect.value) {
+                e.preventDefault();
+                alert('❌ Debe seleccionar un motivo de merma');
+                return false;
+            }
+
+            // Confirmación para mermas
+            if (tipoSalidaSelect.value === 'merma') {
+                const producto = productoSelect.options[productoSelect.selectedIndex].text;
+                if (!confirm(`⚠️ ¿Confirma registrar merma de ${cantidad} unidades de ${producto}?`)) {
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

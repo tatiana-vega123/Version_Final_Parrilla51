@@ -1,0 +1,255 @@
+body {
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  background: #3a3a3a;
+  color: #fff;
+  margin: 0;
+}
+
+.container {
+  max-width: 900px;
+  margin: 20px auto;
+  background: #2f2f2f;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #00000055;
+  margin-top: 180px;
+}
+
+h2 {
+  text-align: center;
+  color: #ffd700;
+  margin-bottom: 20px;
+}
+
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #222;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th {
+  background: #444;
+  padding: 14px;
+  font-size: 15px;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid #444;
+  font-size: 14px;
+}
+
+tbody tr:hover {
+  background: #333;
+  transition: 0.2s;
+}
+
+.btn-eliminar {
+  background: #ff4444;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.btn-eliminar:hover {
+  background: #cc0000;
+}
+
+
+#total {
+  text-align: right;
+  font-size: 22px;
+  color: #ffd700;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+
+#acompaniamientos {
+  background: #252525;
+  padding: 20px;
+  border-radius: 15px;
+  margin-top: 25px;
+}
+
+#titulo-acomp {
+  color: #ffd700;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.bloque-acomp {
+  background: #1e1e1e;
+  padding: 18px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  border-left: 5px solid #ffd700;
+}
+
+.bloque-acomp h5 {
+  margin-bottom: 10px;
+  color: #ffd700;
+}
+
+.acomp-label {
+  display: flex;
+  align-items: center;
+  padding: 6px 0;
+  gap: 8px;
+  font-size: 15px;
+}
+
+.acomp-check {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+
+
+#datos-domicilio input {
+  width: 90%;
+  max-width: 450px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid #ffd700aa;
+  background: #3a3a3a;
+  color: white;
+  margin-bottom: 12px;
+}
+
+#datos-domicilio label {
+  color: #ffd700;
+  font-weight: bold;
+}
+
+
+
+.opciones {
+  margin-top: 20px;
+  padding: 20px;
+  background: #252525;
+  border-radius: 15px;
+}
+
+.opciones h4 {
+  color: #ffd700;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+
+.confirmar {
+  margin-top: 25px;
+  width: 100%;
+  padding: 15px;
+  background: #ffd700;
+  color: #000;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.confirmar:hover {
+  background: #e0b800;
+}
+
+
+a.volver {
+  display: block;
+  margin-top: 25px;
+  text-align: center;
+  text-decoration: none;
+  
+}
+
+a.volver:hover {
+  text-decoration: underline;
+  
+}
+
+.bloque-opciones {
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 25px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+}
+
+.bloque-opciones h4 {
+    color: var(--color-gold);
+    margin-bottom: 12px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.opcion-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    color: var(--text-primary);
+    font-size: 15px;
+}
+
+.opcion-item input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-gold);
+}
+
+#datos-domicilio {
+    background: #2c2c2c;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+#datos-domicilio input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    margin-top: 5px;
+}
+
+.carrito-empty-container {
+    background: none !important;
+    box-shadow: none !important;
+    padding: 40px 0 !important;
+    margin-top: 180px !important;
+    display: flex;
+    justify-content: center;
+}
+
+.carrito-vacio {
+    background: var(--bg-card);
+    padding: 35px 25px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 350px;
+    margin: 0 auto;
+    box-shadow: 0 0 10px #0005;
+    margin-top: 70px !important;
+}
+
+.btn-volver {
+    display: inline-block;
+    margin-top: 15px;
+    background: var(--color-gold);
+    padding: 10px 20px;
+    color: #000000;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    
+}
+
+.btn-volver:hover {
+  background-color: red;
+}

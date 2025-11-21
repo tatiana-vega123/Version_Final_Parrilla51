@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Reservas</title>
+
+  <!-- BOOTSTRAP -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+  <style>
+/* ==== GLOBAL ==== */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #3a3a3a;
+  color: #f0f0f0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/* ==== NAVBAR ==== */
+    /* ==================== NAVBAR ==================== */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #2f2f2f;
+      padding: 12px 30px;
+      color: #fff;
+      width: 100%;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #ff4444;
+    }
+
+    .logo img {
+      height: 40px;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links li {
+      cursor: pointer;
+      font-weight: bold;
+      color: #fff;
+      transition: color 0.3s;
+    }
+
+    .nav-links li a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .nav-links li a:hover {
+      color: #ffd700;
+    }
+    /* Para bajar los enlaces (Inicio, Mesas, Registrar, Órdenes, Reservas) */
+    .nav-links li:not(:last-child) {
+      margin-top: 5px;  /* Ajusta este valor para moverlos hacia abajo */
+    }
+
+/* ==== BOTONES ==== */
+.btn-success {
+  background-color: #ffd700;
+  color: #000;
+  border: none;
+  font-weight: bold;
+}
+.btn-success:hover {
+  background-color: #e6b800;
+}
+.btn-danger {
+  background-color: #ff4444;
+  color: #fff;
+  border: none;
+  font-weight: bold;
+}
+.btn-danger:hover {
+  background-color: #e63b3b;
+}
+.btn-warning {
+  background-color: #ffd700 !important;
+  color: #000 !important;
+  font-weight: bold;
+  border: none;
+}
+.btn-warning:hover {
+  background-color: #e6b800 !important;
+}
+
+/* ==== CARDS ==== */
+.card {
+  background-color: #2f2f2f;
+  color: #f0f0f0;
+  border: 1px solid #ffd700;
+  border-radius: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+.card .card-title {
+  color: #ffd700;
+}
+.card .card-text b {
+  color: #ffd700;
+}
+
+/* ==== MODALS ==== */
+.modal-content {
+  background-color: #2f2f2f;
+  color: #f0f0f0;
+  border-radius: 10px;
+}
+.modal-header {
+  border-bottom: 1px solid #ffd700;
+}
+.modal-footer {
+  border-top: 1px solid #ffd700;
+}
+.modal-title {
+  color: #ffd700;
+}
+
+/* ==== FORM ==== */
+.form-control,
+.form-select {
+  background-color: #4a4a4a;
+  color: #f0f0f0;
+  border: 1px solid #ffd700;
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: #ff4444;
+  box-shadow: none;
+}
+
+/* ==== MAIN ==== */
+main.container {
+  flex-grow: 1;
+  margin-top: -3px; /* ahora solo uno */
+  padding-bottom: 40px;
+}
+main h3 {
+  margin-top: 10px;
+}
+
+/* ==== ALERTAS NORMALES ==== */
+.alert-info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border-color: #bee5eb;
+}
+
+/* ==== ALERTAS FLOTANTES (solo JS) ==== */
+.alert-float {
+  position: fixed;
+  top: 75px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  z-index: 2000;
+}
+
+/* ==== BARRA DE FILTROS ==== */
+.filtro-bar {
+  background: #2f2f2f;
+  border: 2px solid #ffd700;
+  border-radius: 10px;
+  padding: 15px;
+}
+.filtro-bar label {
+  color: #ffd700;
+  font-weight: 600;
+}
+.filtro-input {
+  background: #ffffff !important;
+  color: #333 !important;
+  border: 1px solid #ccc !important;
+  border-radius: 6px !important;
+  padding: 4px 8px;
+}
+.filtro-bar select.filtro-input {
+  cursor: pointer;
+}
+.filtro-bar .btn-warning,
+.filtro-bar .btn-danger {
+  margin-top: 22px;
+  padding: 5px 10px;
+  font-size: 15px;
+  border-radius: 6px;
+}
+
+/* ==== FOOTER ==== */
+footer {
+  background: #2f2f2f;
+  color: #fff;
+  text-align: center;
+  padding: 12px 0;
+  border-top: 2px solid #ffd700;
+  font-size: 15px;
+  width: 100%;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='img/logooo.png') }}" alt="Logo" />
+      <span>Parrilla 51</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="{{ url_for('empleado.empleado_dashboard') }}">Inicio</a></li>
+      <li><a href="{{ url_for('empleado.mesas_empleado') }}">Mesas</a></li>
+      <li><a href="{{ url_for('empleado.registrar_pedido') }}">Registrar</a></li>
+      <li><a href="{{ url_for('empleado.ordenes_empleado') }}">Órdenes</a></li>
+      <li><a href="{{ url_for('empleado.reservas_empleado') }}">Reservas</a></li>
+      <li><a href="{{ url_for('empleado.perfil_empleado') }}"><i class="bi bi-person-circle" style="font-size: 1.3rem;"></i></a></li>
+    </ul>
+  </nav>
+
+  <!-- FLASH MESSAGES -->
+  <div id="alertContainer" class="container mt-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show mt-2">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <!-- MAIN -->
+  <main class="container position-relative">
+
+    <h3 class="text-center mb-3">Reservas Disponibles</h3>
+
+    <!-- BARRA DE FILTROS -->
+    <div class="filtro-bar mb-4">
+      <form class="d-flex flex-wrap align-items-end gap-3"
+            method="GET"
+            action="{{ url_for('empleado.reservas_empleado_busqueda') }}"
+            style="width:100%">
+
+        <!-- ID -->
+        <div class="d-flex flex-column">
+          <label>ID Reserva</label>
+          <input type="number" name="id_reserva" class="filtro-input"
+                placeholder="Ej: 1" value="{{ request.args.get('id_reserva','') }}">
+        </div>
+
+        <!-- Query -->
+        <div class="d-flex flex-column">
+          <label>Nombre / Doc / Tel</label>
+          <input type="text" name="query" class="filtro-input"
+                placeholder="Ej: Juan, 123..."
+                value="{{ request.args.get('query','') }}">
+        </div>
+
+        <!-- Fecha exacta -->
+        <div class="d-flex flex-column">
+          <label>Fecha Exacta</label>
+          <input type="date" name="fecha" class="filtro-input"
+                value="{{ request.args.get('fecha','') }}">
+        </div>
+
+        <!-- Mes -->
+        <div class="d-flex flex-column">
+          <label>Mes</label>
+          <select name="mes" class="filtro-input">
+            <option value="">-- Mes --</option>
+            {% for num, mes in [
+              ('01','Enero'),('02','Febrero'),('03','Marzo'),('04','Abril'),
+              ('05','Mayo'),('06','Junio'),('07','Julio'),('08','Agosto'),
+              ('09','Septiembre'),('10','Octubre'),('11','Noviembre'),('12','Diciembre')
+            ] %}
+              <option value="{{ num }}" {% if request.args.get('mes') == num %}selected{% endif %}>
+                {{ mes }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Estado -->
+        <div class="d-flex flex-column">
+          <label>Estado</label>
+          <select name="estado" class="filtro-input">
+            <option value="">-- Estado --</option>
+            <option value="Pendiente"  {% if request.args.get('estado')=='Pendiente' %}selected{% endif %}>Pendiente</option>
+            <option value="Confirmada" {% if request.args.get('estado')=='Confirmada' %}selected{% endif %}>Confirmada</option>
+          </select>
+        </div>
+
+        <!-- Botones -->
+        <div class="d-flex align-items-end gap-2">
+          <button type="submit" class="btn btn-warning btn-sm">🔍 Buscar</button>
+          <a href="{{ url_for('empleado.reservas_empleado') }}" class="btn btn-danger btn-sm">✖ Limpiar</a>
+        </div>
+
+      </form>
+    </div>
+
+
+    <!-- BOTONES SUPERIORES -->
+    <div class="position-relative mb-3">
+      <a href="{{ url_for('empleado.historial_reservas_em') }}"
+         class="btn btn-warning position-absolute end-0">
+        Historial
+      </a>
+
+      <div class="text-center">
+        <button class="btn btn-danger px-5" data-bs-toggle="modal" data-bs-target="#modalAgregar">
+          + Agregar Reserva
+        </button>
+      </div>
+    </div>
+    
+    <!-- MENSAJE SIN RESERVAS -->
+    {% if not reservas %}
+      <div class="text-center mb-3">
+        <p class="alert alert-info">No hay reservas disponibles.</p>
+      </div>
+    {% endif %}
+
+    <!-- LISTADO DE RESERVAS -->
+    <div class="row mt-4 g-4">
+      {% if reservas %}
+        {% for res in reservas %}
+          
+          <div class="col-12 col-md-6 col-lg-4 d-flex" id="reserva-{{ res.id_reserva }}">
+            <div class="card shadow-sm p-3 flex-fill">
+              <div class="card-body">
+
+                <h5 class="card-title">Reserva #{{ res.id_reserva }}</h5>
+
+                <p class="card-text">
+                  <b>Nombre:</b> {{ res.nombre }}<br>
+                  <b>Documento:</b> {{ res.documento }}<br>
+                  <b>Teléfono:</b> {{ res.telefono }}<br>
+                  <b>Fecha:</b> {{ res.fecha }}<br>
+                  <b>Hora:</b> {{ res.hora }}<br>
+                  <b>Cant. Personas:</b> {{ res.cant_personas }}<br>
+                  <b>Tipo de Evento:</b> {{ res.tipo_evento }}<br>
+                  <b>Comentarios:</b> {{ res.comentarios }}<br>
+                  <b>ID Usuario:</b> {{ res.id_usuario }}<br>
+                  <b>Estado:</b> <span id="estado{{ res.id_reserva }}" class="estado {{ res.estado }}">{{ res.estado }}</span>
+                </p>
+
+                <div class="d-flex justify-content-between mt-3">
+                  <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#modalEditar{{ loop.index0 }}">Editar</button>
+
+                  <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#modalConfirmarEliminar{{ res.id_reserva }}">Cancelar</button>
+
+                  <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#modalEstado{{ res.id_reserva }}">Estado</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- MODAL EDITAR -->
+          <div class="modal fade" id="modalEditar{{ loop.index0 }}" tabindex="-1">
+            <div class="modal-dialog">
+              <form action="{{ url_for('empleado.editar_reserva', id_reserva=res.id_reserva) }}"
+                    method="POST"
+                    class="modal-content p-3">
+
+                <div class="modal-header">
+                  <h5 class="modal-title">Editar Reserva</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                  <label class="form-label">Nombre</label>
+                  <input type="text" class="form-control mb-3" name="nombre" value="{{ res.nombre }}" />
+
+                  <label class="form-label">Documento</label>
+                  <input type="text" class="form-control mb-3" name="documento"
+                         pattern="[0-9]+" value="{{ res.documento }}" />
+
+                  <label class="form-label">Teléfono</label>
+                  <input type="text" class="form-control mb-3" name="telefono" value="{{ res.telefono }}" />
+
+                  <p class="form-label">Fecha:</p>
+                  <p class="text-warning fw-bold">{{ res.fecha }}</p>
+                  <input type="hidden" name="fecha" value="{{ res.fecha }}">
+
+                  <label class="form-label">Hora</label>
+                  <select class="form-select mb-3" name="hora" required>
+                    <option value="11:30am-1:30pm" {% if res.hora=='11:30am-1:30pm' %}selected{% endif %}>11:30am - 1:30pm</option>
+                    <option value="12:00pm-2:00pm" {% if res.hora=='12:00pm-2:00pm' %}selected{% endif %}>12:00pm - 2:00pm</option>
+                    <option value="12:30pm-2:30pm" {% if res.hora=='12:30pm-2:30pm' %}selected{% endif %}>12:30pm - 2:30pm</option>
+                    <option value="1:00pm-3:00pm" {% if res.hora=='1:00pm-3:00pm' %}selected{% endif %}>1:00pm - 3:00pm</option>
+                    <option value="1:30pm-3:30pm" {% if res.hora=='1:30pm-3:30pm' %}selected{% endif %}>1:30pm - 3:30pm</option>
+                    <option value="2:00pm-4:00pm" {% if res.hora=='2:00pm-4:00pm' %}selected{% endif %}>2:00pm - 4:00pm</option>
+                    <option value="2:30pm-4:30pm" {% if res.hora=='2:30pm-4:30pm' %}selected{% endif %}>2:30pm - 4:30pm</option>
+                  </select>
+
+                  <label class="form-label">Cantidad de personas</label>
+                  <select class="form-select mb-3" name="cant_personas">
+                    <option value="">Seleccione la cantidad de personas</option>
+                    {% for i in range(1,13) %}
+                      <option value="{{ i }}" {% if res.cant_personas == i %}selected{% endif %}>{{ i }}</option>
+                    {% endfor %}
+                  </select>
+
+                  <label class="form-label">Tipo de Evento</label>
+                  <select class="form-select mb-3" name="tipo_evento">
+                    <option value="almuerzo"   {% if res.tipo_evento=='almuerzo' %}selected{% endif %}>Almuerzo</option>
+                    <option value="reunion"    {% if res.tipo_evento=='reunion' %}selected{% endif %}>Reunión</option>
+                    <option value="celebracion" {% if res.tipo_evento=='celebracion' %}selected{% endif %}>Celebración</option>
+                    <option value="Otro"       {% if res.tipo_evento=='Otro' %}selected{% endif %}>Otro</option>
+                  </select>
+
+                  <label class="form-label">Comentarios</label>
+                  <input type="text" class="form-control mb-3" name="comentarios" value="{{ res.comentarios }}" />
+
+                  <input type="hidden" name="id_usuario" value="{{ session['id_usuario'] }}">
+                  <input type="hidden" name="estado" value="{{ res.estado }}">
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="submit" class="btn btn-success">Guardar</button>
+                </div>
+
+              </form>
+            </div>
+          </div>
+
+
+          <!-- MODAL CONFIRMAR ELIMINAR -->
+          <div class="modal fade" id="modalConfirmarEliminar{{ res.id_reserva }}" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content p-3">
+
+                <div class="modal-header">
+                  <h5 class="modal-title">¿Seguro que deseas cancelar esta reserva?</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                  Esta acción no se puede deshacer.
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+
+                  <form action="{{ url_for('empleado.eliminar_reserva', id_reserva=res.id_reserva) }}"
+                        method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">Confirmar</button>
+                  </form>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+          <!-- MODAL CAMBIAR ESTADO -->
+          <div class="modal fade" id="modalEstado{{ res.id_reserva }}" tabindex="-1">
+            <div class="modal-dialog">
+              <form onsubmit="return cambiarEstado(event, {{ res.id_reserva }})"
+                    class="modal-content p-3">
+
+                <div class="modal-header">
+                  <h5 class="modal-title">Cambiar Estado</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                  <label class="form-label">Seleccione el nuevo estado</label>
+                  <select class="form-select" id="nuevoEstado{{ res.id_reserva }}">
+                    <option value="">Seleccione...</option>
+                    <option value="Confirmada">Confirmada</option>
+                    <option value="Completada">Completada</option>
+                  </select>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                </div>
+
+              </form>
+            </div>
+          </div>
+
+        {% endfor %}
+      {% endif %}
+    </div>
+
+
+    <!-- MODAL AGREGAR -->
+    <div class="modal fade" id="modalAgregar" tabindex="-1">
+      <div class="modal-dialog">
+        <form id="formAgregarReserva" action="{{ url_for('empleado.agregar_reserva') }}"
+              method="POST" class="modal-content p-3"
+              onsubmit="return validarFechaCrear(event)">
+
+
+          <div class="modal-header">
+            <h5 class="modal-title">Agregar Reserva</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">
+
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control mb-3" name="nombre" required />
+
+            <label class="form-label">Documento</label>
+            <input type="text" pattern="[0-9]+" class="form-control mb-3" name="documento" required />
+
+            <label class="form-label">Teléfono</label>
+            <input type="text" class="form-control mb-3" name="telefono" required />
+
+            <label class="form-label">Fecha</label>
+            <input type="date" class="form-control mb-3" name="fecha"
+                   required min="{{ today }}" max="{{ today[:4] }}-12-31" />
+
+            <label class="form-label">Hora</label>
+            <select class="form-select mb-3" name="hora" required>
+              <option value="11:30am-1:30pm">11:30am - 1:30pm</option>
+              <option value="12:00pm-2:00pm">12:00pm - 2:00pm</option>
+              <option value="12:30pm-2:30pm">12:30pm - 2:30pm</option>
+              <option value="1:00pm-3:00pm">1:00pm - 3:00pm</option>
+              <option value="1:30pm-3:30pm">1:30pm - 3:30pm</option>
+              <option value="2:00pm-4:00pm">2:00pm - 4:00pm</option>
+              <option value="2:30pm-4:30pm">2:30pm - 4:30pm</option>
+            </select>
+
+            <label class="form-label">Cantidad de personas</label>
+            <select class="form-select mb-3" name="cant_personas">
+              <option value="">Seleccione la cantidad</option>
+              {% for i in range(1,13) %}
+                <option value="{{ i }}">{{ i }}</option>
+              {% endfor %}
+            </select>
+
+            <label class="form-label">Tipo de evento</label>
+            <select class="form-select mb-3" name="tipo_evento" required>
+              <option value="">Seleccione...</option>
+              <option value="almuerzo">Almuerzo</option>
+              <option value="reunion">Reunión</option>
+              <option value="celebracion">Celebración</option>
+              <option value="Otro">Otro</option>
+            </select>
+
+            <label class="form-label">Comentarios</label>
+            <input type="text" class="form-control mb-3" name="comentarios" />
+
+            <input type="hidden" name="id_usuario" value="{{ session['id_usuario'] }}">
+            <input type="hidden" name="estado" value="Pendiente">
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success">Agregar</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    © 2025 Parrilla 51 - Todos los derechos reservados
+  </footer>
+
+  <!-- BOOTSTRAP JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ALERTAS JS -->
+  <script>
+    function mostrarAlerta(mensaje, tipo = "success") {
+      const alertContainer = document.getElementById("alertContainer");
+      const alertType = tipo === "error" ? "danger" : "success";
+      
+      const alertDiv = document.createElement("div");
+      alertDiv.className = `alert alert-${alertType} alert-dismissible fade show alert-float`;
+      alertDiv.innerHTML = `
+        ${mensaje}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      `;
+
+      document.body.appendChild(alertDiv);
+
+      setTimeout(() => {
+        bootstrap.Alert.getOrCreateInstance(alertDiv).close();
+      }, 4000);
+    }
+
+
+    function cambiarEstado(event, id_reserva) {
+      event.preventDefault();
+
+      const select = document.getElementById(`nuevoEstado${id_reserva}`);
+      const nuevoEstado = select.value;
+
+      if (!nuevoEstado) {
+        mostrarAlerta("⚠️ Selecciona un estado válido.", "error");
+        return false;
+      }
+
+      fetch(`/empleado/cambiar_estado_reserva/${id_reserva}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nuevo_estado: nuevoEstado })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          const estadoSpan = document.getElementById(`estado${id_reserva}`);
+          estadoSpan.textContent = nuevoEstado;
+          estadoSpan.className = `estado ${nuevoEstado}`;
+
+          if (nuevoEstado === "Completada") {
+            document.getElementById(`reserva-${id_reserva}`)?.remove();
+          }
+
+          mostrarAlerta("✅ Estado actualizado correctamente");
+        } else {
+          mostrarAlerta(data.error || "⚠️ Error al actualizar el estado", "error");
+        }
+      })
+      .catch(() => mostrarAlerta("❌ Error en la conexión con el servidor", "error"));
+
+      const modalEl = document.getElementById(`modalEstado${id_reserva}`);
+      bootstrap.Modal.getInstance(modalEl).hide();
+
+      return false;
+    }
+
+    function validarFechaCrear(event) {
+        event.preventDefault();
+
+        const form = document.getElementById("formAgregarReserva");
+        const fecha = form.querySelector('input[name="fecha"]').value;
+
+        if (!fecha) {
+            mostrarAlerta("⚠️ Debes seleccionar una fecha.", "error");
+            return false;
+        }
+
+        fetch("{{ url_for('empleado.verificar_fecha_reserva') }}", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ fecha: fecha })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.ocupado) {
+                mostrarAlerta("❌ La fecha seleccionada ya tiene una reserva.", "error");
+            } else {
+                form.submit();
+            }
+        })
+        .catch(() => {
+            mostrarAlerta("❌ Error al verificar disponibilidad.", "error");
+        });
+
+        return false;
+    }
+
+
+  </script>
+
+</body>
+</html>

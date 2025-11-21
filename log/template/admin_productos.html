@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultar Productos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <style>
+        .alertas-stock {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .alertas-stock h3 {
+            color: #856404;
+            margin: 0 0 10px 0;
+            font-size: 1.2rem;
+        }
+        
+        .alerta-item {
+            background: white;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        /* Categorías como pestañas */
+        .categorias-tabs {
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: #2a2a2a;
+            margin: 20px;
+            border-radius: 10px;
+        }
+        
+        .categoria-btn {
+            padding: 12px 24px;
+            background: #3a3a3a;
+            color: white;
+            border: 2px solid #555;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .categoria-btn:hover {
+            background: #ffc107;
+            color: #000;
+            border-color: #ffc107;
+        }
+        
+        .categoria-btn.active {
+            background: #ffc107;
+            color: #000;
+            border-color: #ffc107;
+        }
+        
+        .categoria-section {
+            display: none;
+            padding: 20px;
+        }
+        
+        .categoria-section.active {
+            display: block;
+        }
+        
+        .categoria-titulo {
+            color: #ffc107;
+            font-size: 2rem;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.2);
+        }
+        
+        .card.producto-inactivo {
+            opacity: 0.6;
+            border: 2px solid #dc3545;
+            background: #f8d7da;
+        }
+        
+        .card.producto-activo {
+            border: 2px solid #28a745;
+        }
+        
+        /* Estilos para las imágenes */
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 2px solid #ddd;
+        }
+        
+        .card h2 {
+            color: #333;
+            font-size: 1.3rem;
+            margin: 10px 0;
+            min-height: 50px;
+        }
+        
+        .badge-stock {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin: 5px 0;
+        }
+        
+        .stock-bajo {
+            background: #ffc107;
+            color: #000;
+        }
+        
+        .sin-stock {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .stock-ok {
+            background: #28a745;
+            color: white;
+        }
+        
+        .card p {
+            color: #555;
+            margin: 8px 0;
+            font-size: 0.95rem;
+        }
+        
+        .card .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 5px 5px 0 0;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-editar {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .btn-editar:hover {
+            background: #138496;
+        }
+        
+        .btn-activar {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-activar:hover {
+            background: #218838;
+        }
+        
+        .btn-desactivar {
+            background: #ffc107;
+            color: #000;
+        }
+        
+        .btn-desactivar:hover {
+            background: #e0a800;
+        }
+        
+        .btn-eliminar {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-eliminar:hover {
+            background: #c82333;
+        }
+        
+        .estado-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 10px 0;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        
+        .estado-disponible {
+            background: #28a745;
+            color: white;
+        }
+        
+        .estado-no-disponible {
+            background: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="container mt-3">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="header-container">
+        <nav class="navbar"> 
+            <div class="header">
+                <img src="{{ url_for('static', filename='img/logooo.png') }}" alt="Logo Parrilla 51" class="logo">
+                <h1 class="nombre-logo">Parrilla 51</h1>
+            </div>
+            <div class="links"></div>
+            <a href="{{ url_for('auth.logout') }}" class="btn">Salir</a>
+        </nav>
+    </div>
+
+    <main>
+        <h1>🔍 Lista de Productos</h1>
+        
+        {% if alertas_stock and alertas_stock|length > 0 %}
+        <div class="alertas-stock">
+            <h3>⚠️ Alertas de Stock</h3>
+            {% for alerta in alertas_stock %}
+            <div class="alerta-item">
+                {{ alerta.mensaje }} - {{ alerta.fecha.strftime('%d/%m/%Y %H:%M') }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="text-center" style="margin: 20px 0;">
+            <a href="{{ url_for('admin.agregar_producto') }}" class="btn" style="background: #28a745;">➕ Agregar Producto</a>
+        </div>
+        
+        <!-- Pestañas de categorías -->
+        <div class="categorias-tabs">
+            {% for categoria in categorias %}
+            <button class="categoria-btn {% if loop.first %}active{% endif %}" 
+                    onclick="mostrarCategoria('{{ categoria.nombre_categoria }}')">
+                {{ categoria.nombre_categoria }}
+            </button>
+            {% endfor %}
+        </div>
+        
+        <!-- Secciones por categoría -->
+        {% for categoria in categorias %}
+        <div id="cat-{{ categoria.nombre_categoria }}" class="categoria-section {% if loop.first %}active{% endif %}">
+            <h2 class="categoria-titulo">{{ categoria.nombre_categoria }}</h2>
+            
+            <div class="cards-container">
+                {% if productos_por_categoria[categoria.nombre_categoria] %}
+                    {% for p in productos_por_categoria[categoria.nombre_categoria] %}
+                    <div class="card {% if p.estado == 'No disponible' %}producto-inactivo{% else %}producto-activo{% endif %}">
+                        <!-- Imagen del producto -->
+                        {% if p.imagen %}
+                            <img src="{{ url_for('static', filename='img/' + p.imagen) }}" 
+                                 alt="{{ p.nombre }}" 
+                                 onerror="this.src='{{ url_for('static', filename='img/default-product.png') }}'">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='img/default-product.png') }}" 
+                                 alt="{{ p.nombre }}">
+                        {% endif %}
+                        
+                        <h2>{{ p.nombre }}</h2>
+                        
+                        <span class="estado-badge {% if p.estado == 'Disponible' %}estado-disponible{% else %}estado-no-disponible{% endif %}">
+                            {{ p.estado }}
+                        </span>
+                        
+                        {% if p.cantidad == 0 %}
+                            <span class="badge-stock sin-stock">❌ SIN STOCK</span>
+                        {% elif p.cantidad < 5 %}
+                            <span class="badge-stock stock-bajo">⚠️ STOCK BAJO</span>
+                        {% else %}
+                            <span class="badge-stock stock-ok">✅ STOCK OK</span>
+                        {% endif %}
+                        
+                        <p><strong>Cantidad:</strong> {{ p.cantidad }} unidades</p>
+                        <p><strong>Precio:</strong> ${{ "{:,.0f}".format(p.precio) }}</p>
+                        {% if p.descripcion %}
+                        <p><strong>Descripción:</strong> {{ p.descripcion[:60] }}{% if p.descripcion|length > 60 %}...{% endif %}</p>
+                        {% endif %}
+
+                        <div style="margin-top: 15px;">
+                            <a href="{{ url_for('admin.editar_producto', id_producto=p.id_producto) }}" 
+                               class="btn btn-editar">✏️ Editar</a>
+                            
+                            {% if p.estado == 'Disponible' %}
+                                <a href="{{ url_for('admin.toggle_producto', id_producto=p.id_producto) }}" 
+                                   class="btn btn-desactivar" 
+                                   onclick="return confirm('¿Desactivar este producto?');">
+                                   🔴 Desactivar
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for('admin.toggle_producto', id_producto=p.id_producto) }}" 
+                                   class="btn btn-activar" 
+                                   onclick="return confirm('¿Activar este producto?');">
+                                   ✅ Activar
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="grid-column: 1/-1; text-align: center; color: #999;">No hay productos en esta categoría</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="text-center">
+            <a href="{{ url_for('admin.admin_dashboard') }}" class="volver">⬅️ Volver al Dashboard</a>
+        </div>
+    </main>
+
+    <footer>
+        © 2025 - Panel de Administración
+    </footer>
+
+    <script>
+        function mostrarCategoria(nombreCategoria) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.categoria-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Desactivar todos los botones
+            document.querySelectorAll('.categoria-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Activar la sección seleccionada
+            document.getElementById('cat-' + nombreCategoria).classList.add('active');
+            
+            // Activar el botón seleccionado
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

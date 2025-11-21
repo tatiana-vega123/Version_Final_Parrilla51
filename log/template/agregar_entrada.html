@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Entrada - Parrilla 51</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2f2f2f 0%, #3a3a3a 100%);
+            color: #f0f0f0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #1f1f1f 0%, #2f2f2f 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 3px solid #ffd700;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .header h1 {
+            color: #ffd700;
+            font-size: 32px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .form-card {
+            background: linear-gradient(135deg, #2f2f2f 0%, #1f1f1f 100%);
+            border-radius: 15px;
+            padding: 35px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            border: 3px solid #ffd700;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ffd700, #ff4444, #ffd700);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .form-group label i {
+            margin-right: 8px;
+            color: #ff4444;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ffd700;
+            border-radius: 8px;
+            background: #3a3a3a;
+            color: #f0f0f0;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ffed4e;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            background: #2f2f2f;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .required {
+            color: #ff4444;
+            margin-left: 5px;
+        }
+
+        .info-box {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #ffd700;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+
+        .info-box i {
+            color: #ffd700;
+            margin-right: 10px;
+        }
+
+        .info-box p {
+            color: #f0f0f0;
+            margin: 0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 35px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #1f1f1f;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #ffed4e 0%, #ffd700 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #5a6268 0%, #6c757d 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .stock-info {
+            background: rgba(255, 68, 68, 0.1);
+            border: 2px solid #ff4444;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .stock-info.show {
+            display: block;
+        }
+
+        .stock-info strong {
+            color: #ff4444;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-box-open"></i> Registrar Entrada de Inventario</h1>
+        </div>
+
+        <div class="info-box">
+            <i class="fas fa-info-circle"></i>
+            <p><strong>Información:</strong> Registre aquí las entradas de productos al inventario. 
+            El stock se actualizará automáticamente al guardar.</p>
+        </div>
+
+        <form method="POST" class="form-card">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="cod_producto">
+                        <i class="fas fa-box"></i> Producto <span class="required">*</span>
+                    </label>
+                    <select id="cod_producto" name="cod_producto" required>
+                        <option value="">Seleccione un producto</option>
+                        {% for p in productos %}
+                        <option value="{{ p.id_producto }}" data-stock="{{ p.cantidad }}" data-precio="{{ p.precio }}">
+                            {{ p.nombre }} (Stock actual: {{ p.cantidad }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="stock-info" id="stockInfo">
+                        <strong>Stock actual:</strong> <span id="stockActual">0</span> unidades
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cantidad">
+                        <i class="fas fa-sort-numeric-up"></i> Cantidad <span class="required">*</span>
+                    </label>
+                    <input type="number" id="cantidad" name="cantidad" min="1" required 
+                           placeholder="Ingrese la cantidad">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="precio_compra">
+                        <i class="fas fa-dollar-sign"></i> Precio de Compra (c/u) <span class="required">*</span>
+                    </label>
+                    <input type="number" id="precio_compra" name="precio_compra" 
+                           min="0" step="0.01" required placeholder="Ej: 15000">
+                </div>
+
+                <div class="form-group">
+                    <label for="id_proveedor">
+                        <i class="fas fa-truck"></i> Proveedor
+                    </label>
+                    <select id="id_proveedor" name="id_proveedor">
+                        <option value="">Seleccione un proveedor (opcional)</option>
+                        {% for prov in proveedores %}
+                        <option value="{{ prov.id_proveedor }}">{{ prov.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="numero_lote">
+                        <i class="fas fa-barcode"></i> Número de Lote
+                    </label>
+                    <input type="text" id="numero_lote" name="numero_lote" 
+                           placeholder="Ej: LOTE-2025-001">
+                </div>
+
+                <div class="form-group">
+                    <label for="fecha_vencimiento">
+                        <i class="fas fa-calendar-times"></i> Fecha de Vencimiento
+                    </label>
+                    <input type="date" id="fecha_vencimiento" name="fecha_vencimiento">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="tipo_entrada">
+                    <i class="fas fa-list"></i> Tipo de Entrada <span class="required">*</span>
+                </label>
+                <select id="tipo_entrada" name="tipo_entrada" required>
+                    <option value="compra">Compra</option>
+                    <option value="devolucion">Devolución</option>
+                    <option value="ajuste">Ajuste de inventario</option>
+                    <option value="donacion">Donación</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="observaciones">
+                    <i class="fas fa-comment-dots"></i> Observaciones
+                </label>
+                <textarea id="observaciones" name="observaciones" 
+                          placeholder="Detalles adicionales sobre esta entrada..."></textarea>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Registrar Entrada
+                </button>
+                <a href="{{ url_for('admin.admin_entradas') }}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> historial
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Mostrar stock actual al seleccionar producto
+        const productoSelect = document.getElementById('cod_producto');
+        const stockInfo = document.getElementById('stockInfo');
+        const stockActual = document.getElementById('stockActual');
+        const precioCompra = document.getElementById('precio_compra');
+
+        productoSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            if (selectedOption.value) {
+                const stock = selectedOption.getAttribute('data-stock');
+                const precio = selectedOption.getAttribute('data-precio');
+                
+                stockActual.textContent = stock;
+                stockInfo.classList.add('show');
+                
+                // Sugerir precio de compra (80% del precio de venta)
+                if (precio && !precioCompra.value) {
+                    precioCompra.value = Math.round(precio * 0.8);
+                }
+            } else {
+                stockInfo.classList.remove('show');
+            }
+        });
+
+        // Validar que la cantidad sea positiva
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const cantidad = document.getElementById('cantidad').value;
+            if (cantidad <= 0) {
+                e.preventDefault();
+                alert('La cantidad debe ser mayor a 0');
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entradas de Inventario - Parrilla 51</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2f2f2f 0%, #3a3a3a 100%);
+            color: #f0f0f0;
+            min-height: 100vh;
+        }
+
+        .header-container {
+            background: linear-gradient(90deg, #1f1f1f 0%, #2f2f2f 100%);
+            border-bottom: 4px solid #28a745;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            padding: 15px 30px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .navbar h1 {
+            color: #28a745;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .actions-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .table-container {
+            background: linear-gradient(135deg, #2f2f2f 0%, #1f1f1f 100%);
+            border-radius: 15px;
+            padding: 25px;
+            border: 3px solid #28a745;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #f0f0f0;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #1f1f1f 0%, #2f2f2f 100%);
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            color: #28a745;
+            font-weight: bold;
+            border-bottom: 2px solid #28a745;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #3a3a3a;
+        }
+
+        tr:hover {
+            background: rgba(40, 167, 69, 0.05);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .badge-success {
+            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+            color: white;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 60px 20px;
+            color: #aaa;
+        }
+
+        .no-data i {
+            font-size: 64px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <nav class="navbar">
+            <h1><i class="fas fa-box-open"></i> Entradas de Inventario</h1>
+            <a href="{{ url_for('admin.admin_dashboard') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </nav>
+    </div>
+
+    <main>
+        <div class="actions-bar">
+            <a href="{{ url_for('admin.agregar_entrada') }}" class="btn btn-primary">
+                <i class="fas fa-plus-circle"></i> Nueva Entrada
+            </a>
+            <a href="{{ url_for('admin.admin_movimientos') }}" class="btn btn-secondary">
+                <i class="fas fa-history"></i> Ver Historial Completo
+            </a>
+        </div>
+
+        <div class="table-container">
+            {% if entradas and entradas|length > 0 %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Compra</th>
+                        <th>Total</th>
+                        <th>Proveedor</th>
+                        <th>Lote</th>
+                        <th>Tipo</th>
+                        <th>Usuario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entrada in entradas %}
+                    <tr>
+                        <td>{{ entrada.fecha_entrada.strftime('%d/%m/%Y %H:%M') if entrada.fecha_entrada else 'N/A' }}</td>
+                        <td><strong>{{ entrada.nombre_producto }}</strong></td>
+                        <td style="color: #28a745; font-weight: bold;">+{{ entrada.cantidad }}</td>
+                        <td>${{ "{:,.0f}".format(entrada.precio_compra) }}</td>
+                        <td style="color: #ffd700; font-weight: bold;">
+                            ${{ "{:,.0f}".format(entrada.cantidad * entrada.precio_compra) }}
+                        </td>
+                        <td>{{ entrada.nombre_proveedor or 'N/A' }}</td>
+                        <td>{{ entrada.numero_lote or 'N/A' }}</td>
+                        <td>
+                            <span class="badge badge-success">{{ entrada.tipo_entrada|upper }}</span>
+                        </td>
+                        <td style="font-size: 13px; color: #aaa;">{{ entrada.usuario }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="no-data">
+                <i class="fas fa-inbox"></i>
+                <h2>No hay entradas registradas</h2>
+                <p>Comienza agregando tu primera entrada de inventario</p>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>

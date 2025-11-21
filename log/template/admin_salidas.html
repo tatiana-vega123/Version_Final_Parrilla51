@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salidas de Inventario - Parrilla 51</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2f2f2f 0%, #3a3a3a 100%);
+            color: #f0f0f0;
+            min-height: 100vh;
+        }
+
+        .header-container {
+            background: linear-gradient(90deg, #1f1f1f 0%, #2f2f2f 100%);
+            border-bottom: 4px solid #dc3545;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            padding: 15px 30px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .navbar h1 {
+            color: #dc3545;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .actions-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .table-container {
+            background: linear-gradient(135deg, #2f2f2f 0%, #1f1f1f 100%);
+            border-radius: 15px;
+            padding: 25px;
+            border: 3px solid #dc3545;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #f0f0f0;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #1f1f1f 0%, #2f2f2f 100%);
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            color: #dc3545;
+            font-weight: bold;
+            border-bottom: 2px solid #dc3545;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #3a3a3a;
+        }
+
+        tr:hover {
+            background: rgba(220, 53, 69, 0.05);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .badge-venta {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+        }
+
+        .badge-merma {
+            background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+            color: #1f1f1f;
+        }
+
+        .badge-devolucion {
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+            color: white;
+        }
+
+        .badge-ajuste {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 60px 20px;
+            color: #aaa;
+        }
+
+        .no-data i {
+            font-size: 64px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <nav class="navbar">
+            <h1><i class="fas fa-arrow-circle-down"></i> Salidas de Inventario</h1>
+            <a href="{{ url_for('admin.admin_dashboard') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </nav>
+    </div>
+
+    <main>
+        <div class="actions-bar">
+            <a href="{{ url_for('admin.agregar_salida') }}" class="btn btn-primary">
+                <i class="fas fa-plus-circle"></i> Nueva Salida
+            </a>
+            <a href="{{ url_for('admin.admin_movimientos') }}" class="btn btn-secondary">
+                <i class="fas fa-history"></i> Ver Historial Completo
+            </a>
+        </div>
+
+        <div class="table-container">
+            {% if salidas and salidas|length > 0 %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Tipo</th>
+                        <th>Motivo/Descripción</th>
+                        <th>Lote</th>
+                        <th>Usuario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for salida in salidas %}
+                    <tr>
+                        <td>
+                            {{ salida.fecha.strftime('%d/%m/%Y') if salida.fecha else 'N/A' }}
+                            {% if salida.hora %}
+                            <br><small style="color: #aaa;">{{ salida.hora }}</small>
+                            {% endif %}
+                        </td>
+                        <td><strong>{{ salida.nombre_producto }}</strong></td>
+                        <td style="color: #dc3545; font-weight: bold;">-{{ salida.cantidad }}</td>
+                        <td>
+                            {% if salida.tipo_salida == 'venta' %}
+                            <span class="badge badge-venta">💰 VENTA</span>
+                            {% elif salida.tipo_salida == 'merma' %}
+                            <span class="badge badge-merma">⚠️ MERMA</span>
+                            {% elif salida.tipo_salida == 'devolucion' %}
+                            <span class="badge badge-devolucion">↩️ DEVOLUCIÓN</span>
+                            {% else %}
+                            <span class="badge badge-ajuste">🔧 AJUSTE</span>
+                            {% endif %}
+                        </td>
+                        <td style="font-size: 13px;">
+                            {% if salida.tipo_salida == 'merma' and salida.motivo_merma %}
+                            <strong>Motivo:</strong> {{ salida.motivo_merma|upper }}<br>
+                            {% endif %}
+                            {% if salida.descripcion_salida %}
+                            {{ salida.descripcion_salida[:50] }}{% if salida.descripcion_salida|length > 50 %}...{% endif %}
+                            {% else %}
+                            <span style="color: #666;">Sin descripción</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ salida.numero_lote or 'N/A' }}</td>
+                        <td style="font-size: 13px; color: #aaa;">{{ salida.usuario }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="no-data">
+                <i class="fas fa-inbox"></i>
+                <h2>No hay salidas registradas</h2>
+                <p>Las salidas aparecerán aquí cuando se registren</p>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>
