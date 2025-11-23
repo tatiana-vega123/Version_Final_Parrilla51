@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-11-2025 a las 04:28:13
+-- Tiempo de generación: 23-11-2025 a las 09:14:55
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -619,13 +619,13 @@ CREATE TABLE `reservas` (
 
 INSERT INTO `reservas` (`id_reserva`, `fecha`, `hora`, `cant_personas`, `estado`, `telefono`, `id_usuario`, `nombre`, `documento`, `tipo_evento`, `comentarios`) VALUES
 (1, '2025-11-04', '', '10', 'Completada', '3202995114', 45, 'Tommy ', '1141118769', 'Almuerzo', 'holaa'),
-(2, '2025-11-05', '2:00pm-4:00pm', '2', 'Confirmada', '3202995114', 44, 'Tommy ', '1111111', 'Almuerzo', ''),
-(3, '2025-11-07', '12:30pm-2:30pm', '10', 'Pendiente', '3133443343', 48, 'sofia', '8273627', 'Almuerzo', 'hola'),
-(4, '2025-11-13', '12:30pm-2:30pm', '4', 'Pendiente', '3216758943', 48, 'Daniel', '345677', 'Reunión', 'si'),
-(6, '2025-11-13', '2:00pm-4:00pm', '5', 'Pendiente', '3176849663', 48, 'Wendy', '1242557', 'Reunión', 'hola'),
-(7, '2025-11-20', '2:00pm-4:00pm', '6', 'Pendiente', '3823792393', 48, 'luz ', '19790', 'Almuerzo', 'hola'),
-(8, '2025-11-08', '12:30pm-2:30pm', '2', 'Pendiente', '3133443343', 48, 'Wendy', '133567', 'Reunión', 'hola'),
-(9, '2025-11-11', '2:30pm-4:30pm', '11', 'Pendiente', '3202995114', 45, 'uwu', '1111', 'Almuerzo', '');
+(2, '2025-11-05', '2:00pm-4:00pm', '2', 'Completada', '3202995114', 44, 'Tommy ', '1111111', 'Almuerzo', ''),
+(3, '2025-11-07', '12:30pm-2:30pm', '10', 'Completada', '3133443343', 48, 'sofia', '8273627', 'Almuerzo', 'hola'),
+(4, '2025-11-13', '12:30pm-2:30pm', '4', 'Completada', '3216758943', 48, 'Daniel', '345677', 'Reunión', 'si'),
+(6, '2025-11-13', '2:00pm-4:00pm', '5', 'Completada', '3176849663', 48, 'Wendy', '1242557', 'Reunión', 'hola'),
+(7, '2025-11-20', '2:00pm-4:00pm', '6', 'Completada', '3823792393', 48, 'luz ', '19790', 'Almuerzo', 'hola'),
+(8, '2025-11-08', '12:30pm-2:30pm', '2', 'Completada', '3133443343', 48, 'Wendy', '133567', 'Reunión', 'hola'),
+(9, '2025-11-11', '2:30pm-4:30pm', '11', 'Completada', '3202995114', 45, 'uwu', '1111', 'Almuerzo', '');
 
 --
 -- Disparadores `reservas`
