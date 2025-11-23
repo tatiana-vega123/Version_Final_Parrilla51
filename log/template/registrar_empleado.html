@@ -19,7 +19,6 @@ html, body {
   flex-direction: column;
 }
 
-/* ==================== NAVBAR ==================== */
 .navbar {
   display: flex;
   align-items: center;
@@ -65,7 +64,6 @@ html, body {
   margin-top: 5px;
 }
 
-/* ==================== LISTAS (Categorías + Productos) ==================== */
 .list-group-item {
   background-color: #4a4a4a !important;
   color: #f0f0f0 !important;
@@ -79,27 +77,23 @@ html, body {
   transition: all 0.25s ease;
 }
 
-/* 🔥 HOVER ROJITO (Categorías + Productos) */
 #listaCategorias .list-group-item:hover,
 #listaProductos .list-group-item:hover {
   background-color: #3f3f3f !important;
-  border-color: #ff4444 !important;       /* borde rojo */
-  transform: scale(1.03);                 /* zoom */
+  border-color: #ff4444 !important;       
+  transform: scale(1.03);                 
 }
 
-/* ⭐ Categoría seleccionada */
 #listaCategorias .list-group-item.active {
   background-color: #ffd700 !important;
   color: #2f2f2f !important;
   font-weight: bold;
 }
 
-/* ==================== PRODUCTOS ==================== */
 #listaProductos .list-group-item {
   border: 2px solid #ffd700 !important;
 }
 
-/* ==================== BOTONES DE ESTADO ==================== */
 .estado-btn {
   padding: 3px 10px;
   border: none;
@@ -111,13 +105,11 @@ html, body {
 .disponible { background-color: #28a745; }
 .no-disponible { background-color: #dc3545; }
 
-/* Opcional: evita que los botones crezcan con el hover */
 #listaProductos .estado-btn {
   transform: scale(1) !important;
   transition: none !important;
 }
 
-/* ==================== FOOTER ==================== */
 footer {
   background: #2f2f2f;
   color: #fff;
@@ -127,7 +119,6 @@ footer {
   margin-top: auto;
 }
 
-/* ==================== ALERTA ==================== */
 #alertaEstado {
   position: fixed;
   top: 20px;
@@ -210,15 +201,12 @@ footer {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-/* ✅ Formato de precios con coma */
 function formato(num) {
   return Number(num).toLocaleString('en-US', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
   });
 }
-
-/* Datos desde Flask */
 const productos = [
   {% for p in productos %}
   {
@@ -238,7 +226,6 @@ let productoActual = null;
 const modal = new bootstrap.Modal(document.getElementById('estadoModal'));
 const alerta = document.getElementById('alertaEstado');
 
-/* Mostrar productos de cada categoría */
 listaCategorias.addEventListener('click', (e) => {
   if (!e.target.classList.contains('list-group-item')) return;
 
@@ -276,7 +263,6 @@ listaCategorias.addEventListener('click', (e) => {
   });
 });
 
-/* Cambiar estado */
 document.getElementById('btnDisponible').onclick = () => cambiarEstado('Disponible');
 document.getElementById('btnNoDisponible').onclick = () => cambiarEstado('No disponible');
 
@@ -305,7 +291,6 @@ function cambiarEstado(nuevo) {
   modal.hide();
 }
 
-/* Alertas */
 function mostrarAlerta(msg, tipo) {
   alerta.textContent = msg;
   alerta.className = `alert alert-${tipo}`;

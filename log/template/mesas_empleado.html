@@ -9,14 +9,12 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
   <style>
-    /* ==================== RESET ==================== */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    /* ==================== ESTILOS GENERALES ==================== */
     html,
     body {
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -32,7 +30,6 @@
       flex-direction: column;
     }
 
-    /* ==================== WRAPPER ==================== */
     .wrapper {
       display: flex;
       flex-direction: column;
@@ -42,7 +39,6 @@
       width: 100%;
     }
 
-    /* ==================== NAVBAR ==================== */
     .navbar {
       display: flex;
       align-items: center;
@@ -89,13 +85,10 @@
     .nav-links li a:hover {
       color: #ffd700;
     }
-    /* Para bajar los enlaces (Inicio, Mesas, Registrar, Órdenes, Reservas) */
     .nav-links li:not(:last-child) {
-      margin-top: 5px;  /* Ajusta este valor para moverlos hacia abajo */
+      margin-top: 5px;  
     }
 
-
-    /* ==================== BOTONES ==================== */
     button,
     a.btn {
       border-radius: 6px;
@@ -121,7 +114,6 @@
       background: #e6b800;
     }
 
-    /* ==================== GRID DE MESAS ==================== */
     .grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
@@ -156,14 +148,12 @@
       border-color: #ff4444;
     }
 
-    /* === MESA DORADA (clic sostenido) === */
     .mesa.dorada {
       background: #ffd700;
       color: #000;
       border-color: #ffd700;
     }
 
-    /* ==================== FOOTER ==================== */
     footer {
       background: #2f2f2f;
       color: #fff;
@@ -180,7 +170,6 @@
       margin: 20px 0;
     }
 
-    /* === ALERTAS FLASK CENTRADAS === */
     .alert-container {
       position: fixed;
       top: 80px;
@@ -234,35 +223,11 @@
         transform: translateY(-15px);
       }
     }
-
-    /* ==================== MEDIA QUERY PARA RESPONSIVIDAD ==================== */
-    @media (max-width: 768px) {
-      .grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-
-      .mesa {
-        padding: 20px;
-        font-size: 18px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .mesa {
-        padding: 15px;
-        font-size: 16px;
-      }
-    }
   </style>
 </head>
 
 <body>
 
-  <!-- MENSAJES FLASH -->
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
   <div class="alert-container">
@@ -292,7 +257,6 @@
       </ul>
     </nav>
 
-    <!-- MAIN CONTENT -->
     <main>
       <div class="zona">
         <button class="zona-btn historial-btn"
@@ -305,7 +269,7 @@
     </main>
   </div>
 
- <script>
+  <script>
     const mesasGrid = document.getElementById('mesasGrid');
 
     // Mesas traídas desde Flask
@@ -316,13 +280,12 @@
         mesa.className = 'mesa';
         mesa.textContent = m.numero_mesa;
 
-        // Pintar según estado real
         if (m.estado === "ocupada") {
             mesa.classList.add('dorada');
         }
 
         let holdTimer;
-        const holdDuration = 700; // Tiempo de clic sostenido
+        const holdDuration = 700; 
 
         const startHold = (e) => {
             e.stopPropagation();
@@ -353,7 +316,6 @@
         mesa.addEventListener('touchend', cancelHold);
         mesa.addEventListener('touchmove', cancelHold);
 
-        // Click normal → entrar a la orden
         mesa.onclick = () => {
             window.location.href = `/empleado/orden/${m.id_mesa}`;
         };
@@ -361,7 +323,6 @@
         mesasGrid.appendChild(mesa);
     });
 
-    // Ocultar alertas automáticamente después de 7 segundos
     setTimeout(() => {
         const alerts = document.querySelectorAll('.alert');
         alerts.forEach(a => a.remove());

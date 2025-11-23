@@ -6,7 +6,6 @@
     <title>Historial de Pagos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
-      /* --- Necesario para que el footer baje siempre --- */
       html, body {
         height: 100%;
       }
@@ -19,7 +18,6 @@
         display: flex;
         flex-direction: column;
       }
-      /* -------------------------------------------- */
 
       .navbar-custom {
         background-color: #2f2f2f;
@@ -99,18 +97,15 @@
         background-color: #e6b800;
       }
 
-      /* --- Footer que se mantiene al final --- */
       footer {
         background-color: #2f2f2f;
         color: #fff;
         text-align: center;
         padding: 10px;
         border-top: 2px solid #ffd700;
-        margin-top: auto; /* el truco */
+        margin-top: auto; 
       }
-      /* -------------------------------------------- */
     </style>
-
   </head>
 
   <body>
@@ -127,7 +122,7 @@
     <div class="container mt-4">
       <h3>Historial de Pagos del Restaurante</h3>
 
-      <!-- 🔍 Búsqueda -->
+      <!-- Búsqueda -->
 
       <form method="GET" action="{{ url_for('empleado.historial_pagos_restaurante') }}" 
             class="p-3 mb-4 rounded"
@@ -135,7 +130,6 @@
 
         <div class="d-flex align-items-end gap-3 flex-wrap">
 
-          <!-- ID Pago -->
           <div style="min-width:120px;">
             <label class="form-label" style="color:#ffd700; font-size:14px;">ID Pago</label>
             <input type="number" name="id_pago" class="form-control form-control-sm"
@@ -143,22 +137,19 @@
                   placeholder="Ej: 1">
           </div>
 
-          <!-- Mesa -->
           <div style="min-width:120px;">
             <label class="form-label" style="color:#ffd700; font-size:14px;">Mesa</label>
             <input type="number" name="mesa" class="form-control form-control-sm"
                   value="{{ request.args.get('mesa','') }}"
-                  placeholder="Ej: 12">
+                  placeholder="Ej: 1">
           </div>
 
-          <!-- Fecha exacta -->
           <div style="min-width:150px;">
             <label class="form-label" style="color:#ffd700; font-size:14px;">Fecha Exacta</label>
             <input type="date" name="fecha" class="form-control form-control-sm"
                   value="{{ request.args.get('fecha','') }}">
           </div>
 
-          <!-- Mes -->
           <div style="min-width:150px;">
             <label class="form-label" style="color:#ffd700; font-size:14px;">Mes</label>
             <select name="mes" class="form-select form-select-sm">
@@ -175,7 +166,6 @@
             </select>
           </div>
 
-          <!-- Botones -->
           <div class="d-flex gap-2" style="min-width:200px;">
             <button class="btn btn-warning btn-sm w-50" type="submit" style="font-weight:bold;">
               🔍 Buscar
@@ -236,7 +226,7 @@
       {% endif %}
     </div>
 
-    <!-- 🪟 Modal SOLO CON LA TABLA -->
+    <!--  Modal SOLO CON LA TABLA -->
     <div class="modal fade" id="modalDetalles" tabindex="-1" aria-labelledby="modalDetallesLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content" style="background-color:#2f2f2f; color:#fff; border:2px solid #ffd700;">
@@ -245,7 +235,6 @@
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
           </div>
           <div class="modal-body" id="contenidoModal">
-            <!-- Aquí se insertará la tabla -->
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cerrar</button>
@@ -258,10 +247,9 @@
       © 2025 Parrilla 51 - Todos los derechos reservados
     </footer>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script para mostrar solo la tabla -->
+    <!-- Script -->
     <script>
       function mostrarDetalles(id) {
         const boton = event.currentTarget;

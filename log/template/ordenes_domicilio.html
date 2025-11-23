@@ -22,8 +22,6 @@
       display: flex;
       flex-direction: column;
     }
-
-    /* NAVBAR */
     .navbar-custom {
       background-color: #2f2f2f;
       padding: 12px 30px;
@@ -40,7 +38,6 @@
     }
     .btn-volver:hover { background-color: #e6b800; }
 
-    /* CONTENEDOR */
     .ordenes-container {
       padding: 20px;
       width: 100%;
@@ -49,7 +46,6 @@
       flex: 1;
     }
 
-    /* MASONRY LAYOUT */
     .masonry {
       column-count: 2;
       column-gap: 1.5rem;
@@ -59,7 +55,6 @@
     }
     .masonry-item { break-inside: avoid; margin-bottom: 1.5rem; }
 
-    /* TARJETAS (estilo actualizado) */
     .card {
       background-color: #2f2f2f;
       color: #f0f0f0;
@@ -69,11 +64,13 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       padding: 15px;
     }
+    .card-title { color: #ffd700; font-weight: bold; }
+    
     .card:hover {
       transform: scale(1.03);
-      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
     }
-    .card-title { color: #ffd700; font-weight: bold; }
+
+    .label-dato { color: #ffd700; font-weight: bold; }
 
     .btn-estado {
       background-color: #ff4444;
@@ -86,13 +83,11 @@
     }
     .btn-estado:hover { background-color: #cc0000; }
 
-    /* TABLA */
     table { width: 100%; color: #fff; border-collapse: collapse; margin-top: 10px; table-layout: fixed; }
     th, td { border: 1px solid #ffd700; padding: 8px; text-align: center; white-space: normal; }
     th { background-color: #2f2f2f; color: #ffd700; }
     tr:nth-child(even) td { background-color: #444; }
 
-    /* MODAL */
     .modal-content {
       background-color: #2f2f2f;
       color: #f0f0f0;
@@ -103,16 +98,6 @@
     .btn-warning:hover { background-color: #e6b800; }
     select.form-select { background-color: #3a3a3a; color: white; border: 1px solid #ffd700; width: 100%; }
 
-    /* ALERTA NO HAY ÓRDENES */
-    .alert-info {
-      background-color: #d1ecf1;
-      color: #0c5460;
-      border-color: #bee5eb;
-      padding: 12px;
-      border-radius: 6px;
-    }
-
-    /* FOOTER */
     footer {
       background-color: #2f2f2f;
       color: #f7f7f7;
@@ -126,7 +111,6 @@
 
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar-custom">
   <div class="navbar-left">
     <img src="{{ url_for('static', filename='img/logooo.png') }}" alt="Logo" />
@@ -135,9 +119,49 @@
   <a href="{{ url_for('empleado.ordenes_empleado') }}" class="btn-volver">Volver a Órdenes</a>
 </nav>
 
-<!-- CONTENIDO -->
 <div class="ordenes-container">
     <h2 class="text-center" style="color:#ffd700; font-weight:bold;">Órdenes - Domicilio</h2>
+
+    <!-- BÚSQUEDA -->
+    <form method="GET" action="{{ url_for('empleado.ordenes_domicilio_busqueda') }}" class="p-3 mb-4 rounded" style="background:#2f2f2f; border:2px solid #ffd700;">
+      <div class="d-flex align-items-end gap-3 flex-wrap">
+        {% set filtros = request.args %}
+
+        <div style="min-width:120px;">
+          <label class="form-label" style="color:#ffd700;">ID Orden</label>
+          <input type="number" name="id_orden" class="form-control form-control-sm" value="{{ filtros.get('id_orden','') }}" placeholder="Ej: 1">
+        </div>
+
+        <div style="min-width:120px;">
+          <label class="form-label" style="color:#ffd700;">ID Cliente</label>
+          <input type="number" name="id_cliente" class="form-control form-control-sm" value="{{ filtros.get('id_cliente','') }}" placeholder="Ej: 1">
+        </div>
+
+        <div style="min-width:160px;">
+          <label class="form-label" style="color:#ffd700;">Teléfono</label>
+          <input type="text" name="telefono" class="form-control form-control-sm" value="{{ filtros.get('telefono','') }}" placeholder="Ej: 320...">
+        </div>
+
+        <div style="min-width:220px;">
+          <label class="form-label" style="color:#ffd700;">Dirección</label>
+          <input type="text" name="direccion" class="form-control form-control-sm" value="{{ filtros.get('direccion','') }}" placeholder="Ej: Calle...">
+        </div>
+
+        <div style="min-width:180px;">
+          <label class="form-label" style="color:#ffd700;">Estado</label>
+          <select name="estado" class="form-select form-select-sm">
+            <option value="">-- Estado --</option>
+            <option value="pendiente" {% if filtros.get('estado')=='pendiente' %}selected{% endif %}>Pendiente</option>
+            <option value="en preparacion" {% if filtros.get('estado')=='en preparacion' %}selected{% endif %}>En preparación</option>
+          </select>
+        </div>
+
+        <div class="d-flex gap-2" style="min-width:200px;">
+          <button class="btn btn-warning btn-sm w-50" type="submit">🔍 Buscar</button>
+          <a href="{{ url_for('empleado.ordenes_domicilio') }}" class="btn btn-danger btn-sm w-50" style="background:#ff4444; border:none;">✖ Limpiar</a>
+        </div>
+      </div>
+    </form>
 
     {% if not ordenes %}
       <div id="no-ordenes" class="text-center mb-3">
@@ -147,29 +171,30 @@
 
     <div class="masonry mt-4" id="ordenes-masonry">
         {% for orden in ordenes %}
-        {% if orden.estado not in ['entregado', 'cancelado'] and orden.direccion %}
         <div class="masonry-item" id="item-{{ orden.id_pedido }}">
             <div class="card" id="card-{{ orden.id_pedido }}">
                 <h5 class="card-title">Orden #{{ orden.id_pedido }}</h5>
-                <p><b>Cliente ID:</b> {{ orden.cod_usuario|default('N/A') }}</p>
-                <p><b>Teléfono:</b> {{ orden.telefono|default('N/A') }}</p>
-                <p><b>Dirección:</b> {{ orden.direccion|default('N/A') }}</p>
-                <p><b>Fecha:</b> {{ orden.fecha|default('N/A') }}</p>
-                <p><b>Hora:</b> {{ orden.hora|default('N/A') }}</p>
-                <p><b>Método de Pago:</b> {{ orden.metodo_pago|default('N/A') }}</p>
-                <p><b>Estado:</b>
+
+                <p><span class="label-dato">Cliente ID:</span> {{ orden.cod_usuario }}</p>
+                <p><span class="label-dato">Teléfono:</span> {{ orden.telefono }}</p>
+                <p><span class="label-dato">Dirección:</span> {{ orden.direccion }}</p>
+                <p><span class="label-dato">Fecha:</span> {{ orden.fecha }}</p>
+                <p><span class="label-dato">Hora:</span> {{ orden.hora }}</p>
+                <p><span class="label-dato">Método de Pago:</span> {{ orden.metodo_pago }}</p>
+                <p><span class="label-dato">Estado:</span>
                     <span id="estado-{{ orden.id_pedido }}">
                         {% if orden.estado == "en preparacion" %} en preparación
-                        {% else %} {{ orden.estado|default('pendiente') }} {% endif %}
+                        {% else %} {{ orden.estado }} {% endif %}
                     </span>
                 </p>
-                <p><b>Total:</b> ${{ "{:,.0f}".format(orden.total|default(0)) }}</p>
+                <p><span class="label-dato">Total:</span> ${{ "{:,.0f}".format(orden.total|default(0)|int) }}</p>
 
-                <button class="btn-estado" onclick="abrirModal('{{ orden.id_pedido }}', '{{ orden.estado|default('pendiente') }}')">
+                <button class="btn-estado" onclick="abrirModal('{{ orden.id_pedido }}', '{{ orden.estado }}')">
                     Cambiar Estado
                 </button>
 
                 <h6 class="mt-3" style="color:#ffd700;">Detalles del pedido:</h6>
+
                 <div style="overflow-x:auto;">
                     <table>
                         <thead>
@@ -181,12 +206,12 @@
                           </tr>
                         </thead>
                         <tbody>
-                          {% for producto in orden.productos %}
+                          {% for p in orden.productos %}
                           <tr>
-                            <td>{{ producto.nombre|default('N/A') }}</td>
-                            <td>{{ producto.cantidad|default(0) }}</td>
-                            <td>${{ "{:,.0f}".format(producto.precio_unitario|default(0)) }}</td>
-                            <td>${{ "{:,.0f}".format(producto.subtotal|default(0)) }}</td>
+                            <td>{{ p.nombre }}</td>
+                            <td>{{ p.cantidad|default(0) }}</td>
+                            <td>${{ "{:,.0f}".format(p.precio_unitario|default(0)|int) }}</td>
+                            <td>${{ "{:,.0f}".format(p.subtotal|default(0)|int) }}</td>
                           </tr>
                           {% endfor %}
                         </tbody>
@@ -195,12 +220,11 @@
 
             </div>
         </div>
-        {% endif %}
         {% endfor %}
     </div>
 </div>
 
-<!-- MODAL ESTADO -->
+<!-- MODAL  ESTADOS-->
 <div class="modal fade" id="modalEstado" tabindex="-1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -226,24 +250,22 @@
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   © 2025 Parrilla 51 - Todos los derechos reservados
 </footer>
 
-<!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   let pedidoSeleccionado = null;
 
-  function abrirModal(id, estadoActual) {
+  function abrirModal(id, estado) {
       pedidoSeleccionado = id;
-      document.getElementById("nuevoEstado").value = estadoActual;
+      document.getElementById("nuevoEstado").value = estado;
       new bootstrap.Modal(document.getElementById("modalEstado")).show();
   }
 
   function guardarCambio() {
-      const nuevoEstado = document.getElementById("nuevoEstado").value.trim();
+      const nuevoEstado = document.getElementById("nuevoEstado").value;
       if (!nuevoEstado) return alert("Seleccione un estado válido.");
 
       fetch(`/actualizar_estado/${pedidoSeleccionado}`, {
@@ -257,42 +279,15 @@
           document.getElementById(`estado-${pedidoSeleccionado}`).textContent = estadoTxt;
 
           if (nuevoEstado === "entregado" || nuevoEstado === "cancelado") {
-              const card = document.getElementById(`card-${pedidoSeleccionado}`);
-              const item = document.getElementById(`item-${pedidoSeleccionado}`) || card;
-
-              if (item) {
-                  item.style.transition = "opacity 0.4s ease, transform 0.4s ease";
-                  item.style.opacity = "0";
-                  item.style.transform = "scale(0.95)";
-                  setTimeout(() => { 
-                    item.remove();
-                    checkNoOrdenes();
-                  }, 400);
-              }
+              const item = document.getElementById(`item-${pedidoSeleccionado}`);
+              item.style.opacity = "0";
+              item.style.transform = "scale(0.95)";
+              setTimeout(() => item.remove(), 400);
           }
 
           bootstrap.Modal.getInstance(document.getElementById("modalEstado")).hide();
       });
   }
-
-  function checkNoOrdenes() {
-      const masonry = document.getElementById("ordenes-masonry");
-      const noOrdenes = document.getElementById("no-ordenes");
-
-      if (masonry.children.length === 0) {
-          if (!noOrdenes) {
-              const div = document.createElement("div");
-              div.id = "no-ordenes";
-              div.className = "text-center mb-3";
-              div.innerHTML = '<p class="alert alert-info">No hay órdenes a domicilio en este momento.</p>';
-              masonry.parentNode.insertBefore(div, masonry);
-          }
-      } else {
-          if (noOrdenes) noOrdenes.remove();
-      }
-  }
-
-  document.addEventListener("DOMContentLoaded", checkNoOrdenes);
 </script>
 
 </body>

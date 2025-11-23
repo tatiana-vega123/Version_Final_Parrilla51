@@ -23,7 +23,6 @@
       flex-direction: column;
     }
 
-    /* NAVBAR */
     .navbar {
       display: flex;
       align-items: center;
@@ -33,10 +32,10 @@
       color: #fff;
       width: 100%;
     }
-    /* Para bajar los enlaces (Inicio, Mesas, Registrar, Órdenes, Reservas) */
     .nav-links li:not(:last-child) {
-      margin-top: 5px;  /* Ajusta este valor para moverlos hacia abajo */
+      margin-top: 5px;  
     }
+
     .logo {
       display: flex;
       align-items: center;
@@ -68,7 +67,6 @@
       color: #ffd700;
     }
 
-    /* CARD OPCIONES */
     .card-opcion {
       background-color: #2f2f2f;
       border: 2px solid #ffd700;
@@ -94,11 +92,9 @@
       margin-bottom: 15px;
     }
 
-    /* BOTONES ESTÁNDAR */
-    .btn-ver,
-    .btn-historial {
-      background-color: #ffd700;    /* Amarillo */
-      color: black;                 /* Letras negras */
+    .btn-ver {
+      background-color: #ffd700;    
+      color: black;                 
       border: none;
       font-weight: bold;
       padding: 10px 20px;
@@ -108,11 +104,27 @@
       display: inline-block;
     }
 
-    .btn-ver:hover,
-    .btn-historial:hover {
-      background-color: #ff4444;    /* Rojo */
-      color: white;                 /* Letras blancas */
+    .btn-ver:hover {
+      background-color: #ff4444;    
+      color: white;                 
       transform: scale(1.07);
+    }
+
+    .zona-btn {
+      background: #ffd700;
+      color: #000;
+      border: none;
+      font-size: 16px;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 6px;
+      transition: 0.3s;
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .zona-btn:hover {
+      background: #e6b800;
     }
 
     footer {
@@ -162,9 +174,10 @@
 
     <!-- BOTÓN HISTORIAL -->
     <div class="mb-4">
-      <a href="{{ url_for('empleado.historial_ordenes_empleado') }}" class="btn-historial">
+      <button class="zona-btn historial-btn"
+        onclick="window.location.href='{{ url_for('empleado.historial_ordenes_empleado') }}'">
         Historial
-      </a>
+      </button>
     </div>
 
     <div class="row">
@@ -172,7 +185,7 @@
       <div class="col-md-4">
         <div class="card-opcion">
           <h3>Órdenes del Restaurante</h3>
-          <p>Pedidos realizados para consumir dentro del local.</p>
+          <p>Pedidos realizados para consumir dentro del restaurante.</p>
           <a href="{{ url_for('empleado.ordenes_restaurante') }}" class="btn-ver">Ver más</a>
         </div>
       </div>
@@ -181,7 +194,7 @@
       <div class="col-md-4">
         <div class="card-opcion">
           <h3>Órdenes a Domicilio</h3>
-          <p>Pedidos enviados a la dirección del cliente.</p>
+          <p>Pedidos que serán enviados a la dirección del cliente.</p>
           <a href="{{ url_for('empleado.ordenes_domicilio') }}" class="btn-ver">Ver más</a>
         </div>
       </div>

@@ -107,7 +107,7 @@
 
     footer {
       background-color: #2f2f2f;
-      color: #ffd700;
+      color: #ffffff;
       text-align: center;
       padding: 10px;
       border-top: 2px solid #ffd700;
@@ -131,7 +131,7 @@
   <div class="container mt-4">
     <h3 class="text-center" style="color:#ffd700;">Historial de Órdenes</h3>
 
-    <!-- BÚSQUEDA AVANZADA -->
+    <!-- BÚSQUEDA -->
     <form method="GET" 
           action="{{ url_for('empleado.historial_ordenes_empleado') }}" 
           class="p-3 mb-4 rounded"
@@ -149,19 +149,19 @@
         <div style="min-width:120px;">
           <label class="form-label" style="color:#ffd700;">ID Usuario</label>
           <input type="number" name="id_usuario" class="form-control form-control-sm"
-                 value="{{ filtros.get('id_usuario','') }}" placeholder="Ej: 5">
+                 value="{{ filtros.get('id_usuario','') }}" placeholder="Ej: 1">
         </div>
 
         <div style="min-width:180px;">
           <label class="form-label" style="color:#ffd700;">Nombre</label>
           <input type="text" name="nombre" class="form-control form-control-sm"
-                 value="{{ filtros.get('nombre','') }}" placeholder="Ej: Juan">
+                 value="{{ filtros.get('nombre','') }}" placeholder="Ej: Sebastián">
         </div>
 
         <div style="min-width:150px;">
           <label class="form-label" style="color:#ffd700;">Teléfono</label>
           <input type="text" name="telefono" class="form-control form-control-sm"
-                 value="{{ filtros.get('telefono','') }}" placeholder="Ej: 310555...">
+                 value="{{ filtros.get('telefono','') }}" placeholder="Ej: 320...">
         </div>
 
         <div style="min-width:160px;">

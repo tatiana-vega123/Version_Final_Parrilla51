@@ -136,9 +136,7 @@ def orden_mesa(mesa_id):
             flash(f"❌ Error al registrar pago: {str(e)}", "danger")
             return redirect(url_for('empleado.orden_mesa', mesa_id=mesa_id))
 
-    # ===========================
     # AL ENTRAR A LA MESA → OCUPADA
-    # ===========================
     cur.execute("UPDATE mesas SET estado='ocupada' WHERE id_mesa=%s", (mesa_id,))
     mysql.connection.commit()
 
@@ -180,7 +178,9 @@ def cambiar_estado_mesa(id_mesa):
 
     return jsonify({"ok": True, "estado": nuevo_estado})
 
-
+# ===============================
+# Historial pagos
+# ===============================
 @empleado_bp.route('/empleado/historial_pagos', methods=['GET'])
 def historial_pagos_restaurante():
     es_empleado, mensaje = verificar_empleado()
@@ -190,36 +190,29 @@ def historial_pagos_restaurante():
 
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-    # ==========================
     #  CAPTURA DE FILTROS
-    # ==========================
     id_pago = request.args.get("id_pago", "").strip()
     mesa = request.args.get("mesa", "").strip()
-    fecha = request.args.get("fecha", "").strip()  # YYYY-MM-DD
-    mes = request.args.get("mes", "").strip()      # "01", "02", etc.
+    fecha = request.args.get("fecha", "").strip()  
+    mes = request.args.get("mes", "").strip()      
 
-    # ==========================
     #  BASE DE CONSULTA
-    # ==========================
     sql = "SELECT * FROM pagos_restaurante WHERE 1=1"
     params = []
 
-    # FILTRO POR ID PAGO
+    # FILTROS
     if id_pago:
         sql += " AND id_pago_restaurante = %s"
         params.append(id_pago)
 
-    # FILTRO POR MESA
     if mesa:
         sql += " AND id_mesa = %s"
         params.append(mesa)
 
-    # FILTRO POR FECHA EXACTA
     if fecha:
         sql += " AND DATE(fecha) = %s"
         params.append(fecha)
 
-    # FILTRO POR MES (solo MM)
     if mes:
         sql += " AND DATE_FORMAT(fecha, '%%m') = %s"
         params.append(mes)
@@ -227,15 +220,11 @@ def historial_pagos_restaurante():
     # ORDEN FINAL
     sql += " ORDER BY fecha DESC, hora DESC"
 
-    # ==========================
     #  EJECUTAR CONSULTA
-    # ==========================
     cur.execute(sql, params)
     pagos = cur.fetchall()
 
-    # ==========================
     #  FORMATEAR AGRUPACIÓN
-    # ==========================
     meses = {
         '01': 'Enero', '02': 'Febrero', '03': 'Marzo', '04': 'Abril',
         '05': 'Mayo', '06': 'Junio', '07': 'Julio', '08': 'Agosto',
@@ -245,10 +234,7 @@ def historial_pagos_restaurante():
     historial_por_fecha = {}
 
     for pago in pagos:
-
-        # ===================================
         #  DETALLES DEL PAGO (PRODUCTOS)
-        # ===================================
         cur.execute("""
             SELECT d.*, p.nombre
             FROM detalle_pedido_restaurante d
@@ -309,7 +295,7 @@ def registrar_pedido():
                 'nombre_categoria': c[1]
             })
 
-    # ✅ TRAER TODOS LOS PRODUCTOS (sin filtrar por estado)
+    #  TRAER TODOS LOS PRODUCTOS 
     cur.execute("""
         SELECT 
             p.id_producto, 
@@ -391,6 +377,7 @@ def actualizar_estado_producto():
         mysql.connection.rollback()
         return jsonify({"success": False, "msg": f"❌ Error: {str(e)}"}), 500
 
+
 # ===============================
 # ÓRDENES
 # ===============================
@@ -400,53 +387,7 @@ def ordenes_empleado():
     if not es_empleado:
         flash(mensaje, 'danger')
         return redirect(url_for('auth.login'))
-    
-    search_query = request.args.get('search_query', '').strip()
-
-    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    
-    if search_query:
-        cur.execute("""
-            SELECT * FROM pedidos
-            WHERE (cod_usuario LIKE %s OR telefono LIKE %s OR estado LIKE %s)
-            AND estado IN ('pendiente', 'en preparacion')
-            ORDER BY fecha DESC, hora DESC
-        """, (f"%{search_query}%", f"%{search_query}%", f"%{search_query}%"))
-    else:
-        cur.execute("""
-            SELECT * FROM pedidos
-            WHERE estado IN ('pendiente', 'en preparacion')
-            ORDER BY fecha DESC, hora DESC
-        """)
-
-    pedidos = cur.fetchall()
-    ordenes = []
-
-    for pedido in pedidos:
-        cur.execute("""
-            SELECT dp.cod_producto, dp.cantidad, dp.precio_unitario, p.nombre
-            FROM detalle_pedido dp
-            JOIN productos p ON dp.cod_producto = p.id_producto
-            WHERE dp.cod_pedido = %s
-        """, (pedido['id_pedido'],))
-        detalles = cur.fetchall()
-
-        productos = []
-        for d in detalles:
-            subtotal = float(d['cantidad']) * float(d['precio_unitario']) if d['cantidad'] and d['precio_unitario'] else 0.0
-            productos.append({
-                'nombre': d['nombre'],
-                'cantidad': d['cantidad'],
-                'precio_unitario': float(d['precio_unitario']) if d['precio_unitario'] is not None else 0.0,
-                'subtotal': subtotal
-            })
-
-        pedido['productos'] = productos
-        ordenes.append(pedido)
-
-    cur.close()
-    
-    return render_template('ordenes_empleado.html', ordenes=ordenes, search_query=search_query)
+    return render_template('ordenes_empleado.html')
 
 # ===============================
 # ÓRDENES SOLO RESTAURANTE
@@ -466,8 +407,6 @@ def ordenes_restaurante():
         ORDER BY fecha DESC, hora DESC
     """)
     pedidos = cur.fetchall()
-
-    # DETALLES DEL PEDIDO
     for p in pedidos:
         cur.execute("""
             SELECT dp.cantidad, dp.precio_unitario, pr.nombre
@@ -475,10 +414,116 @@ def ordenes_restaurante():
             JOIN productos pr ON dp.cod_producto = pr.id_producto
             WHERE dp.cod_pedido = %s
         """, (p['id_pedido'],))
-        p['productos'] = cur.fetchall()
+        
+        detalles = cur.fetchall()
+        productos = []
+
+        for d in detalles:
+            cantidad = int(d["cantidad"] or 0)
+            precio = float(d["precio_unitario"] or 0)
+            subtotal = cantidad * precio
+
+            productos.append({
+                "nombre": d["nombre"],
+                "cantidad": cantidad,
+                "precio_unitario": precio,
+                "subtotal": subtotal
+            })
+
+        p["productos"] = productos
 
     cur.close()
     return render_template('ordenes_restaurante.html', ordenes=pedidos)
+
+# ===============================
+# ÓRDENES SOLO RESTAURANTE
+# ===============================
+
+@empleado_bp.route('/empleado/ordenes_restaurante/buscar', methods=['GET'])
+def ordenes_restaurante_busqueda():
+    es_empleado, mensaje = verificar_empleado()
+    if not es_empleado:
+        flash(mensaje, 'danger')
+        return redirect(url_for('auth.login'))
+
+    id_orden = request.args.get("id_orden", "").strip()
+    id_cliente = request.args.get("id_cliente", "").strip()
+    telefono = request.args.get("telefono", "").strip()
+    estado = request.args.get("estado", "").strip().lower()
+
+    filtros = ["p.direccion IS NULL"]
+    valores = []
+
+    if id_orden:
+        filtros.append("p.id_pedido = %s")
+        valores.append(id_orden)
+
+    if id_cliente:
+        filtros.append("p.cod_usuario = %s")
+        valores.append(id_cliente)
+
+    if telefono:
+        filtros.append("p.telefono LIKE %s")
+        valores.append(f"%{telefono}%")
+
+    if estado:
+        filtros.append("p.estado = %s")
+        valores.append(estado)
+    else:
+        filtros.append("p.estado IN ('pendiente','en preparacion')")
+
+    where = " AND ".join(filtros)
+
+    sql = f"""
+        SELECT 
+            p.*,
+            GROUP_CONCAT(
+                CONCAT(
+                    pr.nombre, '||',
+                    COALESCE(dp.cantidad, 0), '||',
+                    COALESCE(dp.precio_unitario, 0), '||',
+                    COALESCE(dp.cantidad * dp.precio_unitario, 0)
+                ) SEPARATOR '@@'
+            ) AS productos
+        FROM pedidos p
+        LEFT JOIN detalle_pedido dp ON p.id_pedido = dp.cod_pedido
+        LEFT JOIN productos pr ON dp.cod_producto = pr.id_producto
+        WHERE {where}
+        AND dp.cod_producto IS NOT NULL
+        GROUP BY p.id_pedido
+        ORDER BY p.fecha ASC, p.hora ASC
+    """
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute(sql, valores)
+    filas = cur.fetchall()
+    cur.close()
+
+    ordenes = []
+
+    for o in filas:
+        productos = []
+
+        if o["productos"]:
+            partes = o["productos"].split("@@")
+
+            for fila in partes:
+                try:
+                    nombre, cant, precio, subtotal = fila.split("||")
+                    productos.append({
+                        "nombre": nombre,
+                        "cantidad": int(cant or 0),
+                        "precio_unitario": float(precio or 0),
+                        "subtotal": float(subtotal or 0)
+                    })
+                except:
+                    pass
+
+        o["productos"] = productos
+        ordenes.append(o)
+
+    return render_template("ordenes_restaurante.html", ordenes=ordenes)
+
 
 # ===============================
 # ÓRDENES SOLO DOMICILIO
@@ -499,7 +544,6 @@ def ordenes_domicilio():
     """)
     pedidos = cur.fetchall()
 
-    # DETALLES DEL PEDIDO
     for p in pedidos:
         cur.execute("""
             SELECT dp.cantidad, dp.precio_unitario, pr.nombre
@@ -507,10 +551,119 @@ def ordenes_domicilio():
             JOIN productos pr ON dp.cod_producto = pr.id_producto
             WHERE dp.cod_pedido = %s
         """, (p['id_pedido'],))
-        p['productos'] = cur.fetchall()
+        
+        detalles = cur.fetchall()
+        productos = []
+
+        for d in detalles:
+            cantidad = int(d["cantidad"] or 0)
+            precio = float(d["precio_unitario"] or 0)
+            subtotal = cantidad * precio
+
+            productos.append({
+                "nombre": d["nombre"],
+                "cantidad": cantidad,
+                "precio_unitario": precio,
+                "subtotal": subtotal
+            })
+
+        p["productos"] = productos
 
     cur.close()
     return render_template('ordenes_domicilio.html', ordenes=pedidos)
+
+# ===============================
+# Busqueda ordenes domicilio
+# ===============================
+
+@empleado_bp.route('/empleado/ordenes_domicilio/buscar', methods=['GET'])
+def ordenes_domicilio_busqueda():
+    es_empleado, mensaje = verificar_empleado()
+    if not es_empleado:
+        flash(mensaje, 'danger')
+        return redirect(url_for('auth.login'))
+
+    id_orden = request.args.get("id_orden", "").strip()
+    id_cliente = request.args.get("id_cliente", "").strip()
+    telefono = request.args.get("telefono", "").strip()
+    direccion = request.args.get("direccion", "").strip()
+    estado = request.args.get("estado", "").strip().lower()
+
+    filtros = ["p.direccion IS NOT NULL"]
+    valores = []
+
+    if id_orden:
+        filtros.append("p.id_pedido = %s")
+        valores.append(id_orden)
+
+    if id_cliente:
+        filtros.append("p.cod_usuario = %s")
+        valores.append(id_cliente)
+
+    if telefono:
+        filtros.append("p.telefono LIKE %s")
+        valores.append(f"%{telefono}%")
+
+    if direccion:
+        filtros.append("p.direccion LIKE %s")
+        valores.append(f"%{direccion}%")
+
+    if estado:
+        filtros.append("p.estado = %s")
+        valores.append(estado)
+    else:
+        filtros.append("p.estado IN ('pendiente','en preparacion')")
+
+    where = " AND ".join(filtros)
+
+    sql = f"""
+        SELECT 
+            p.*,
+            GROUP_CONCAT(
+                CONCAT(
+                    pr.nombre, '||',
+                    COALESCE(dp.cantidad, 0), '||',
+                    COALESCE(dp.precio_unitario, 0), '||',
+                    COALESCE(dp.cantidad * dp.precio_unitario, 0)
+                ) SEPARATOR '@@'
+            ) AS productos
+        FROM pedidos p
+        LEFT JOIN detalle_pedido dp ON p.id_pedido = dp.cod_pedido
+        LEFT JOIN productos pr ON dp.cod_producto = pr.id_producto
+        WHERE {where}
+        AND dp.cod_producto IS NOT NULL
+        GROUP BY p.id_pedido
+        ORDER BY p.fecha ASC, p.hora ASC
+    """
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute(sql, valores)
+    filas = cur.fetchall()
+    cur.close()
+
+    ordenes = []
+
+    for o in filas:
+        productos = []
+
+        if o["productos"]:
+            partes = o["productos"].split("@@")
+            for fila in partes:
+                try:
+                    nombre, cant, precio, subtotal = fila.split("||")
+                    productos.append({
+                        "nombre": nombre,
+                        "cantidad": int(cant or 0),
+                        "precio_unitario": float(precio or 0),
+                        "subtotal": float(subtotal or 0)
+                    })
+                except:
+                    pass
+
+        o["productos"] = productos
+        ordenes.append(o)
+
+    return render_template("ordenes_domicilio.html", ordenes=ordenes)
 
 # ===============================
 # CAMBIAR ESTADO PEDIDO (AJAX)
@@ -550,8 +703,9 @@ def actualizar_estado(id_pedido):
         'mensaje': f'{estado_emoji} Pedido #{id_pedido} marcado como {nuevo_estado}'
     })
 
-#historial ordenes
-    
+# ===============================
+# Historial órdenes 
+# ===============================    
 @empleado_bp.route('/empleado/historial_ordenes')
 def historial_ordenes_empleado():
     es_empleado, mensaje = verificar_empleado()
@@ -561,9 +715,6 @@ def historial_ordenes_empleado():
 
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-    # ============================
-    # OBTENER FILTROS
-    # ============================
     filtros = {
         "id_orden": request.args.get('id_orden', '').strip(),
         "id_usuario": request.args.get('id_usuario', '').strip(),
@@ -576,9 +727,6 @@ def historial_ordenes_empleado():
         "mes": request.args.get('mes', '').strip(),
     }
 
-    # ============================
-    # SQL BASE CON JOIN
-    # ============================
     sql = """
         SELECT 
             p.id_pedido,
@@ -598,9 +746,6 @@ def historial_ordenes_empleado():
     """
     params = []
 
-    # ============================
-    # FILTROS DINÁMICOS
-    # ============================
     if filtros["id_orden"]:
         sql += " AND p.id_pedido = %s"
         params.append(filtros["id_orden"])
@@ -642,9 +787,6 @@ def historial_ordenes_empleado():
     cur.execute(sql, params)
     pedidos = cur.fetchall()
 
-    # ============================
-    # DETALLES DE CADA ORDEN
-    # ============================
     ordenes = []
     for pedido in pedidos:
         cur.execute("""
@@ -673,9 +815,6 @@ def historial_ordenes_empleado():
         pedido['productos'] = productos
         ordenes.append(pedido)
 
-    # ============================
-    # AGRUPAR POR FECHA
-    # ============================
     meses = {
         '01': 'Enero', '02': 'Febrero', '03': 'Marzo', '04': 'Abril',
         '05': 'Mayo', '06': 'Junio', '07': 'Julio', '08': 'Agosto',
@@ -759,8 +898,6 @@ def verificar_fecha_reserva():
 
     return jsonify({"ocupado": bool(existe)})
 
-
-
 # ===============================
 # BUSCAR RESERVAS
 # ===============================
@@ -772,7 +909,6 @@ def reservas_empleado_busqueda():
         flash(mensaje, 'danger')
         return redirect(url_for('auth.login'))
 
-    # Filtros GET
     id_reserva = request.args.get("id_reserva", "").strip()
     query = request.args.get("query", "").strip()
     fecha = request.args.get("fecha", "").strip()
@@ -835,7 +971,6 @@ def agregar_reserva():
 
     cur = mysql.connection.cursor()
 
-    # Validar reserva duplicada
     cur.execute(""" SELECT COUNT(*) as total FROM reservas WHERE fecha = %s AND estado !='Cancelada'""", (fecha,))
 
     result = cur.fetchone()
@@ -846,7 +981,6 @@ def agregar_reserva():
         cur.close()
         return redirect(url_for("empleado.reservas_empleado"))
 
-    # Validar usuario
     id_usuario = request.form["id_usuario"]
     cur.execute("SELECT id_usuario FROM usuarios WHERE id_usuario = %s", (id_usuario,))
     usuario = cur.fetchone()
@@ -900,7 +1034,7 @@ def editar_reserva(id_reserva):
 
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     
-    # Validar fecha duplicada (EXCLUYENDO las canceladas)
+    
     cur.execute("""
         SELECT COUNT(*) AS total  
         FROM reservas 
@@ -909,7 +1043,7 @@ def editar_reserva(id_reserva):
           AND estado != 'Cancelada'
     """, (nueva_fecha, id_reserva))
 
-    count = cur.fetchone()["total"]  # ← ESTO FALTABA
+    count = cur.fetchone()["total"]  
 
     if count > 0:
         flash(f"⚠️ Ya existe otra reserva para el {nueva_fecha}", "warning")
@@ -959,12 +1093,10 @@ def eliminar_reserva(id_reserva):
     try:
         cur = mysql.connection.cursor()
 
-        # Obtener info
         cur.execute("SELECT nombre, fecha FROM reservas WHERE id_reserva=%s", (id_reserva,))
         reserva = cur.fetchone()
 
         if reserva:
-            # En lugar de borrar, cambia el estado
             cur.execute("""
                 UPDATE reservas 
                 SET estado = 'Cancelada'
@@ -982,7 +1114,6 @@ def eliminar_reserva(id_reserva):
         flash(f"❌ Error al cancelar la reserva: {str(e)}", "danger")
 
     return redirect(url_for('empleado.reservas_empleado'))
-
 
 # ===============================
 # CAMBIAR ESTADO RESERVA
@@ -1024,10 +1155,9 @@ def historial_reservas_em():
         flash(mensaje, 'danger')
         return redirect(url_for('auth.login'))
 
-    # Obtener filtros
     query = request.args.get('query', '').strip()
     id_reserva = request.args.get('id_reserva', '').strip()
-    id_usuario = request.args.get('id_usuario', '').strip()   # 🔥 NUEVO
+    id_usuario = request.args.get('id_usuario', '').strip()   
     fecha = request.args.get('fecha', '').strip()
     mes = request.args.get('mes', '').strip()
     estado = request.args.get('estado', '').strip()
@@ -1044,22 +1174,18 @@ def historial_reservas_em():
 
     params = []
 
-    # Filtro por Estado
     if estado:
         sql += " AND estado = %s"
         params.append(estado)
 
-    # Filtro por ID Reserva
     if id_reserva:
         sql += " AND id_reserva = %s"
         params.append(id_reserva)
 
-    # 🔥 Filtro por ID Usuario (NUEVO)
     if id_usuario:
         sql += " AND id_usuario = %s"
         params.append(id_usuario)
 
-    # Filtro general
     if query:
         sql += """
             AND (
@@ -1070,24 +1196,20 @@ def historial_reservas_em():
         """
         params.extend([f"%{query}%", f"%{query}%", f"%{query}%"])
 
-    # Filtro fecha exacta
     if fecha:
         sql += " AND fecha = %s"
         params.append(fecha)
 
-    # Filtro por Mes
     if mes:
         sql += " AND DATE_FORMAT(fecha, '%%m') = %s"
         params.append(mes)
 
-    # Ordenar y limitar
     sql += " ORDER BY fecha DESC LIMIT 300"
 
     cur.execute(sql, params)
     historial = cur.fetchall()
     cur.close()
 
-    # Agrupar por mes
     meses_nombres = {
         '01':'Enero','02':'Febrero','03':'Marzo','04':'Abril','05':'Mayo','06':'Junio',
         '07':'Julio','08':'Agosto','09':'Septiembre','10':'Octubre','11':'Noviembre','12':'Diciembre'

@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
   <style>
-/* ==== GLOBAL ==== */
 html, body {
   height: 100%;
   margin: 0;
@@ -32,60 +31,57 @@ body {
   box-sizing: inherit;
 }
 
-/* ==== NAVBAR ==== */
-    /* ==================== NAVBAR ==================== */
-    .navbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #2f2f2f;
-      padding: 12px 30px;
-      color: #fff;
-      width: 100%;
-    }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 22px;
-      font-weight: bold;
-      color: #ff4444;
-    }
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #2f2f2f;
+  padding: 12px 30px;
+  color: #fff;
+  width: 100%;
+}
 
-    .logo img {
-      height: 40px;
-    }
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #ff4444;
+}
 
-    .nav-links {
-      list-style: none;
-      display: flex;
-      gap: 25px;
-      margin: 0;
-      padding: 0;
-    }
+.logo img {
+  height: 40px;
+}
 
-    .nav-links li {
-      cursor: pointer;
-      font-weight: bold;
-      color: #fff;
-      transition: color 0.3s;
-    }
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
 
-    .nav-links li a {
-      color: #fff;
-      text-decoration: none;
-    }
+.nav-links li {
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+  transition: color 0.3s;
+}
 
-    .nav-links li a:hover {
-      color: #ffd700;
-    }
-    /* Para bajar los enlaces (Inicio, Mesas, Registrar, Órdenes, Reservas) */
-    .nav-links li:not(:last-child) {
-      margin-top: 5px;  /* Ajusta este valor para moverlos hacia abajo */
-    }
+.nav-links li a {
+  color: #fff;
+  text-decoration: none;
+}
 
-/* ==== BOTONES ==== */
+.nav-links li a:hover {
+  color: #ffd700;
+}
+.nav-links li:not(:last-child) {
+  margin-top: 5px;  
+}
+
 .btn-success {
   background-color: #ffd700;
   color: #000;
@@ -114,7 +110,6 @@ body {
   background-color: #e6b800 !important;
 }
 
-/* ==== CARDS ==== */
 .card {
   background-color: #2f2f2f;
   color: #f0f0f0;
@@ -133,7 +128,6 @@ body {
   color: #ffd700;
 }
 
-/* ==== MODALS ==== */
 .modal-content {
   background-color: #2f2f2f;
   color: #f0f0f0;
@@ -149,7 +143,6 @@ body {
   color: #ffd700;
 }
 
-/* ==== FORM ==== */
 .form-control,
 .form-select {
   background-color: #4a4a4a;
@@ -162,24 +155,22 @@ body {
   box-shadow: none;
 }
 
-/* ==== MAIN ==== */
+
 main.container {
   flex-grow: 1;
-  margin-top: -3px; /* ahora solo uno */
+  margin-top: -3px; 
   padding-bottom: 40px;
 }
 main h3 {
   margin-top: 10px;
 }
 
-/* ==== ALERTAS NORMALES ==== */
 .alert-info {
   background-color: #d1ecf1;
   color: #0c5460;
   border-color: #bee5eb;
 }
 
-/* ==== ALERTAS FLOTANTES (solo JS) ==== */
 .alert-float {
   position: fixed;
   top: 75px;
@@ -189,7 +180,6 @@ main h3 {
   z-index: 2000;
 }
 
-/* ==== BARRA DE FILTROS ==== */
 .filtro-bar {
   background: #2f2f2f;
   border: 2px solid #ffd700;
@@ -218,7 +208,6 @@ main h3 {
   border-radius: 6px;
 }
 
-/* ==== FOOTER ==== */
 footer {
   background: #2f2f2f;
   color: #fff;
@@ -252,7 +241,7 @@ footer {
     </ul>
   </nav>
 
-  <!-- FLASH MESSAGES -->
+  <!-- MENSAJES FLASH  -->
   <div id="alertContainer" class="container mt-3">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
@@ -271,36 +260,32 @@ footer {
 
     <h3 class="text-center mb-3">Reservas Disponibles</h3>
 
-    <!-- BARRA DE FILTROS -->
+    <!-- BUSQUEDA -->
     <div class="filtro-bar mb-4">
       <form class="d-flex flex-wrap align-items-end gap-3"
             method="GET"
             action="{{ url_for('empleado.reservas_empleado_busqueda') }}"
             style="width:100%">
 
-        <!-- ID -->
         <div class="d-flex flex-column">
           <label>ID Reserva</label>
           <input type="number" name="id_reserva" class="filtro-input"
                 placeholder="Ej: 1" value="{{ request.args.get('id_reserva','') }}">
         </div>
 
-        <!-- Query -->
         <div class="d-flex flex-column">
           <label>Nombre / Doc / Tel</label>
           <input type="text" name="query" class="filtro-input"
-                placeholder="Ej: Juan, 123..."
+                placeholder="Ej: Sebastián, 123... 320..."
                 value="{{ request.args.get('query','') }}">
         </div>
 
-        <!-- Fecha exacta -->
         <div class="d-flex flex-column">
           <label>Fecha Exacta</label>
           <input type="date" name="fecha" class="filtro-input"
                 value="{{ request.args.get('fecha','') }}">
         </div>
 
-        <!-- Mes -->
         <div class="d-flex flex-column">
           <label>Mes</label>
           <select name="mes" class="filtro-input">
@@ -317,7 +302,6 @@ footer {
           </select>
         </div>
 
-        <!-- Estado -->
         <div class="d-flex flex-column">
           <label>Estado</label>
           <select name="estado" class="filtro-input">
@@ -327,7 +311,6 @@ footer {
           </select>
         </div>
 
-        <!-- Botones -->
         <div class="d-flex align-items-end gap-2">
           <button type="submit" class="btn btn-warning btn-sm">🔍 Buscar</button>
           <a href="{{ url_for('empleado.reservas_empleado') }}" class="btn btn-danger btn-sm">✖ Limpiar</a>
@@ -613,7 +596,6 @@ footer {
   <!-- BOOTSTRAP JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- ALERTAS JS -->
   <script>
     function mostrarAlerta(mensaje, tipo = "success") {
       const alertContainer = document.getElementById("alertContainer");

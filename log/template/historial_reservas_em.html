@@ -89,7 +89,6 @@
       background-color: #e6b800;
     }
 
-    /* 🔥 FILA ROJA PARA CANCELADAS */
     .fila-cancelada {
       background-color: #5a1f1f !important;
       color: #ffb3b3 !important;
@@ -121,7 +120,7 @@
 </nav>
 
 <div class="container mt-4">
-  <h3 class="text-center" style="color:#ffd700;">Historial de Reservas (finalizadas)</h3>
+  <h3 class="text-center" style="color:#ffd700;">Historial de Reservas </h3>
 
   <!-- BÚSQUEDA -->
   <form method="GET" action="{{ url_for('empleado.historial_reservas_em') }}" 
@@ -130,7 +129,6 @@
 
     <div class="d-flex align-items-end gap-3 flex-wrap">
 
-      <!-- ID Reserva -->
       <div style="min-width:120px;">
         <label class="form-label" style="color:#ffd700; font-size:14px;">ID Reserva</label>
         <input type="number" name="id_reserva" class="form-control form-control-sm"
@@ -138,7 +136,6 @@
               placeholder="Ej: 1">
       </div>
 
-      <!-- ID Usuario -->
       <div style="min-width:120px;">
         <label class="form-label" style="color:#ffd700; font-size:14px;">ID Usuario</label>
         <input type="number" name="id_usuario" class="form-control form-control-sm"
@@ -146,22 +143,19 @@
               placeholder="Ej: 15">
       </div>
 
-      <!-- Query -->
       <div style="min-width:220px;">
         <label class="form-label" style="color:#ffd700; font-size:14px;">Nombre / Doc / Tel</label>
         <input type="text" name="query" class="form-control form-control-sm"
               value="{{ request.args.get('query','') }}"
-              placeholder="Ej: Juan, 123456...">
+              placeholder="Ej: Sebastián, 123... 320...">
       </div>
 
-      <!-- Fecha exacta -->
       <div style="min-width:150px;">
         <label class="form-label" style="color:#ffd700; font-size:14px;">Fecha Exacta</label>
         <input type="date" name="fecha" class="form-control form-control-sm"
               value="{{ request.args.get('fecha','') }}">
       </div>
 
-      <!-- Mes -->
       <div style="min-width:150px;">
         <label class="form-label" style="color:#ffd700; font-size:14px;">Mes</label>
         <select name="mes" class="form-select form-select-sm">
@@ -178,7 +172,6 @@
         </select>
       </div>
 
-      <!-- Estado -->
       <div style="min-width:150px;">
         <label class="form-label" style="color:#ffd700; font-size:14px;">Estado</label>
         <select name="estado" class="form-select form-select-sm">
