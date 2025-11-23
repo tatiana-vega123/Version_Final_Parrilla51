@@ -433,11 +433,11 @@ def ordenes_empleado():
 
         productos = []
         for d in detalles:
-            subtotal = float(d['cantidad']) * float(d['precio_unitario'])
+            subtotal = float(d['cantidad']) * float(d['precio_unitario']) if d['cantidad'] and d['precio_unitario'] else 0.0
             productos.append({
                 'nombre': d['nombre'],
                 'cantidad': d['cantidad'],
-                'precio_unitario': float(d['precio_unitario']),
+                'precio_unitario': float(d['precio_unitario']) if d['precio_unitario'] is not None else 0.0,
                 'subtotal': subtotal
             })
 
@@ -448,6 +448,69 @@ def ordenes_empleado():
     
     return render_template('ordenes_empleado.html', ordenes=ordenes, search_query=search_query)
 
+# ===============================
+# ÓRDENES SOLO RESTAURANTE
+# ===============================
+@empleado_bp.route('/empleado/ordenes_restaurante')
+def ordenes_restaurante():
+    es_empleado, mensaje = verificar_empleado()
+    if not es_empleado:
+        flash(mensaje, 'danger')
+        return redirect(url_for('auth.login'))
+    
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("""
+        SELECT * FROM pedidos
+        WHERE estado IN ('pendiente', 'en preparacion') 
+        AND direccion IS NULL
+        ORDER BY fecha DESC, hora DESC
+    """)
+    pedidos = cur.fetchall()
+
+    # DETALLES DEL PEDIDO
+    for p in pedidos:
+        cur.execute("""
+            SELECT dp.cantidad, dp.precio_unitario, pr.nombre
+            FROM detalle_pedido dp
+            JOIN productos pr ON dp.cod_producto = pr.id_producto
+            WHERE dp.cod_pedido = %s
+        """, (p['id_pedido'],))
+        p['productos'] = cur.fetchall()
+
+    cur.close()
+    return render_template('ordenes_restaurante.html', ordenes=pedidos)
+
+# ===============================
+# ÓRDENES SOLO DOMICILIO
+# ===============================
+@empleado_bp.route('/empleado/ordenes_domicilio')
+def ordenes_domicilio():
+    es_empleado, mensaje = verificar_empleado()
+    if not es_empleado:
+        flash(mensaje, 'danger')
+        return redirect(url_for('auth.login'))
+    
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("""
+        SELECT * FROM pedidos
+        WHERE estado IN ('pendiente', 'en preparacion') 
+        AND direccion IS NOT NULL
+        ORDER BY fecha DESC, hora DESC
+    """)
+    pedidos = cur.fetchall()
+
+    # DETALLES DEL PEDIDO
+    for p in pedidos:
+        cur.execute("""
+            SELECT dp.cantidad, dp.precio_unitario, pr.nombre
+            FROM detalle_pedido dp
+            JOIN productos pr ON dp.cod_producto = pr.id_producto
+            WHERE dp.cod_pedido = %s
+        """, (p['id_pedido'],))
+        p['productos'] = cur.fetchall()
+
+    cur.close()
+    return render_template('ordenes_domicilio.html', ordenes=pedidos)
 
 # ===============================
 # CAMBIAR ESTADO PEDIDO (AJAX)
