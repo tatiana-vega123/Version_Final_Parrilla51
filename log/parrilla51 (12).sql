@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-11-2025 a las 09:14:55
+-- Tiempo de generación: 23-11-2025 a las 19:44:41
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -604,7 +604,7 @@ CREATE TABLE `reservas` (
   `fecha` date DEFAULT NULL,
   `hora` enum('','11:30m-1:30pm','12:00pm-2:00pm','12:30pm-2:30pm','1:00pm-3:00pm','1:30pm-3:30pm','2:00pm-4:00pm','2:30pm-4:30pm') NOT NULL,
   `cant_personas` enum('','1','2','3','4','5','6','7','8','9','10','11','12') DEFAULT NULL,
-  `estado` enum('Pendiente','Confirmada','Completada') DEFAULT 'Pendiente',
+  `estado` enum('Pendiente','Confirmada','Completada','Cancelada') DEFAULT 'Pendiente',
   `telefono` varchar(20) DEFAULT NULL,
   `id_usuario` int(11) DEFAULT NULL,
   `nombre` varchar(100) DEFAULT NULL,
