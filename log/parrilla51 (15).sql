@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-11-2025 a las 19:44:41
+-- Tiempo de generación: 14-12-2025 a las 20:10:16
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -93,36 +93,36 @@ INSERT INTO `alertas` (`id_alerta`, `mensaje`, `fecha`, `tipo`) VALUES
 (42, '❌ Se eliminó el producto \"Churrasco\" del inventario', '2025-11-01 21:55:31', 'producto'),
 (43, 'Nuevo usuario registrado: ANDRES (andresitoarias96@gmail.com)', '2025-11-02 14:49:24', ''),
 (44, 'Nuevo usuario registrado: ANDRES (andresitoarias96@gmail.com)', '2025-11-02 15:57:19', ''),
-(0, 'Nuevo usuario registrado: Tommy  (gisellvega820@gmail.com)', '2025-11-03 22:23:05', ''),
-(0, '❌ Se canceló la reserva N° 3', '2025-11-03 22:58:11', 'reserva'),
-(0, '❌ Se canceló la reserva N° 4', '2025-11-03 22:58:11', 'reserva'),
-(0, '❌ Se canceló la reserva N° 5', '2025-11-03 22:58:11', 'reserva'),
-(0, '❌ Se canceló la reserva N° 6', '2025-11-03 22:58:11', 'reserva'),
-(0, '❌ Se canceló la reserva N° 7', '2025-11-03 22:58:11', 'reserva'),
-(0, '❌ Se canceló la reserva N° 8', '2025-11-03 22:58:11', 'reserva'),
-(0, '❌ Se canceló la reserva N° 9', '2025-11-03 22:58:11', 'reserva'),
-(0, '❌ Se canceló la reserva N° 10', '2025-11-03 22:58:11', 'reserva'),
-(0, '❌ Se canceló la reserva N° 11', '2025-11-03 22:58:11', 'reserva'),
-(0, '? Se creó una reserva para el 2025-11-04 a las  para 10 personas, ', '2025-11-04 02:17:22', 'reserva'),
-(0, '? Se creó una reserva para el 2025-11-05 a las 2:00pm-4:00pm para 2 personas, ', '2025-11-04 03:17:33', 'reserva'),
-(0, 'Nuevo usuario registrado: Wendy (wenda109108@gmail.com)', '2025-11-04 14:58:05', ''),
-(0, '? Se creó una reserva para el 2025-11-07 a las 12:30pm-2:30pm para 10 personas, ', '2025-11-04 15:20:38', 'reserva'),
-(0, '? Se creó una reserva para el 2025-11-13 a las 12:30pm-2:30pm para 4 personas, ', '2025-11-04 15:38:15', 'reserva'),
-(0, '? Se creó una reserva para el 2025-11-14 a las 1:00pm-3:00pm para 3 personas, ', '2025-11-04 15:45:04', 'reserva'),
-(0, '❌ Se canceló la reserva N° 5', '2025-11-04 16:00:02', 'reserva'),
-(0, '? Se creó una reserva para el 2025-11-13 a las 2:00pm-4:00pm para 5 personas, ', '2025-11-04 16:00:53', 'reserva'),
-(0, '❌ Se eliminó el producto \"Pechuga a la plancha\" del inventario', '2025-11-04 17:35:57', 'producto'),
-(0, '❌ Se eliminó el producto \"Papas fritasss\" del inventario', '2025-11-04 17:35:57', 'producto'),
-(0, '❌ Se eliminó el producto \"Arroz blanco\" del inventario', '2025-11-04 17:35:57', 'producto'),
-(0, '? Se creó una reserva para el 2025-11-20 a las 2:00pm-4:00pm para 6 personas, ', '2025-11-05 16:53:05', 'reserva'),
-(0, '? Se creó una reserva para el 2025-11-08 a las 12:30pm-2:30pm para 2 personas, ', '2025-11-05 20:17:43', 'reserva'),
-(0, '❌ El pedido N° 3 fue cancelado', '2025-11-06 02:02:31', 'pedido'),
-(0, '❌ El pedido N° 3 fue cancelado', '2025-11-06 02:06:15', 'pedido'),
-(0, 'Nuevo usuario registrado: Tatiana (gisellvega820@gmail.com)', '2025-11-06 20:32:16', ''),
-(0, 'Nuevo usuario registrado: Blanca  (restauranteparrilla51@gmail.com)', '2025-11-06 20:50:36', ''),
-(0, '? El usuario \"Tommy  V\" fue desactivado', '2025-11-10 21:58:10', 'usuario'),
-(0, '? Se creó una reserva para el 2025-11-11 a las  para 12 personas, ', '2025-11-11 01:14:26', 'reserva'),
-(0, '📦 Entrada: +20 unidades de Aguacate', '2025-11-13 22:08:48', 'stock');
+(45, 'Nuevo usuario registrado: Tommy  (gisellvega820@gmail.com)', '2025-11-03 22:23:05', ''),
+(46, '❌ Se canceló la reserva N° 3', '2025-11-03 22:58:11', 'reserva'),
+(47, '❌ Se canceló la reserva N° 4', '2025-11-03 22:58:11', 'reserva'),
+(48, '❌ Se canceló la reserva N° 5', '2025-11-03 22:58:11', 'reserva'),
+(49, '❌ Se canceló la reserva N° 6', '2025-11-03 22:58:11', 'reserva'),
+(50, '❌ Se canceló la reserva N° 7', '2025-11-03 22:58:11', 'reserva'),
+(51, '❌ Se canceló la reserva N° 8', '2025-11-03 22:58:11', 'reserva'),
+(52, '❌ Se canceló la reserva N° 9', '2025-11-03 22:58:11', 'reserva'),
+(53, '❌ Se canceló la reserva N° 10', '2025-11-03 22:58:11', 'reserva'),
+(54, '❌ Se canceló la reserva N° 11', '2025-11-03 22:58:11', 'reserva'),
+(55, '? Se creó una reserva para el 2025-11-04 a las  para 10 personas, ', '2025-11-04 02:17:22', 'reserva'),
+(56, '? Se creó una reserva para el 2025-11-05 a las 2:00pm-4:00pm para 2 personas, ', '2025-11-04 03:17:33', 'reserva'),
+(57, 'Nuevo usuario registrado: Wendy (wenda109108@gmail.com)', '2025-11-04 14:58:05', ''),
+(58, '? Se creó una reserva para el 2025-11-07 a las 12:30pm-2:30pm para 10 personas, ', '2025-11-04 15:20:38', 'reserva'),
+(59, '? Se creó una reserva para el 2025-11-13 a las 12:30pm-2:30pm para 4 personas, ', '2025-11-04 15:38:15', 'reserva'),
+(60, '? Se creó una reserva para el 2025-11-14 a las 1:00pm-3:00pm para 3 personas, ', '2025-11-04 15:45:04', 'reserva'),
+(61, '❌ Se canceló la reserva N° 5', '2025-11-04 16:00:02', 'reserva'),
+(62, '? Se creó una reserva para el 2025-11-13 a las 2:00pm-4:00pm para 5 personas, ', '2025-11-04 16:00:53', 'reserva'),
+(63, '❌ Se eliminó el producto \"Pechuga a la plancha\" del inventario', '2025-11-04 17:35:57', 'producto'),
+(64, '❌ Se eliminó el producto \"Papas fritasss\" del inventario', '2025-11-04 17:35:57', 'producto'),
+(65, '❌ Se eliminó el producto \"Arroz blanco\" del inventario', '2025-11-04 17:35:57', 'producto'),
+(66, '? Se creó una reserva para el 2025-11-20 a las 2:00pm-4:00pm para 6 personas, ', '2025-11-05 16:53:05', 'reserva'),
+(67, '? Se creó una reserva para el 2025-11-08 a las 12:30pm-2:30pm para 2 personas, ', '2025-11-05 20:17:43', 'reserva'),
+(68, '❌ El pedido N° 3 fue cancelado', '2025-11-06 02:02:31', 'pedido'),
+(69, '❌ El pedido N° 3 fue cancelado', '2025-11-06 02:06:15', 'pedido'),
+(70, 'Nuevo usuario registrado: Tatiana (gisellvega820@gmail.com)', '2025-11-06 20:32:16', ''),
+(71, 'Nuevo usuario registrado: Blanca  (restauranteparrilla51@gmail.com)', '2025-11-06 20:50:36', ''),
+(72, '? El usuario \"Tommy  V\" fue desactivado', '2025-11-10 21:58:10', 'usuario'),
+(73, '? Se creó una reserva para el 2025-11-11 a las  para 12 personas, ', '2025-11-11 01:14:26', 'reserva'),
+(74, '📦 Entrada: +20 unidades de Aguacate', '2025-11-13 22:08:48', 'stock');
 
 -- --------------------------------------------------------
 
@@ -269,8 +269,8 @@ CREATE TABLE `historial_pedidos` (
   `id_historial` int(11) NOT NULL,
   `id_pedido` int(11) NOT NULL,
   `estado` enum('pendiente','en preparacion','entregado','cancelado') NOT NULL,
-  `fecha` date NOT NULL,
-  `hora` time NOT NULL,
+  `fecha` date NOT NULL DEFAULT curdate(),
+  `hora` time NOT NULL DEFAULT curtime(),
   `fecha_cambio` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -279,41 +279,41 @@ CREATE TABLE `historial_pedidos` (
 --
 
 INSERT INTO `historial_pedidos` (`id_historial`, `id_pedido`, `estado`, `fecha`, `hora`, `fecha_cambio`) VALUES
-(0, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-05 23:55:50'),
-(0, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-05 23:55:53'),
-(0, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 00:00:08'),
-(0, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 00:00:08'),
-(0, 3, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 00:06:13'),
-(0, 3, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 00:06:14'),
-(0, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 00:33:37'),
-(0, 3, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 00:33:39'),
-(0, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 00:33:44'),
-(0, 3, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 00:33:45'),
-(0, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 01:11:34'),
-(0, 4, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 01:11:41'),
-(0, 2, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 01:11:53'),
-(0, 1, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 01:46:49'),
-(0, 1, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 01:46:52'),
-(0, 1, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 01:52:54'),
-(0, 1, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:08'),
-(0, 2, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:08'),
-(0, 4, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:08'),
-(0, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:08'),
-(0, 1, 'en preparacion', '0000-00-00', '00:00:00', '2025-11-06 02:02:18'),
-(0, 1, 'entregado', '0000-00-00', '00:00:00', '2025-11-06 02:02:22'),
-(0, 3, 'cancelado', '0000-00-00', '00:00:00', '2025-11-06 02:02:31'),
-(0, 5, 'entregado', '0000-00-00', '00:00:00', '2025-11-06 02:02:35'),
-(0, 4, 'entregado', '0000-00-00', '00:00:00', '2025-11-06 02:02:38'),
-(0, 2, 'entregado', '0000-00-00', '00:00:00', '2025-11-06 02:02:42'),
-(0, 1, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:57'),
-(0, 2, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:57'),
-(0, 3, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:57'),
-(0, 4, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:57'),
-(0, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:57'),
-(0, 5, 'entregado', '0000-00-00', '00:00:00', '2025-11-06 02:06:02'),
-(0, 3, 'cancelado', '0000-00-00', '00:00:00', '2025-11-06 02:06:15'),
-(0, 4, 'entregado', '0000-00-00', '00:00:00', '2025-11-06 02:06:25'),
-(0, 2, 'en preparacion', '0000-00-00', '00:00:00', '2025-11-06 02:20:07');
+(1, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-05 23:55:50'),
+(2, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-05 23:55:53'),
+(3, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 00:00:08'),
+(4, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 00:00:08'),
+(5, 3, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 00:06:13'),
+(6, 3, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 00:06:14'),
+(7, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 00:33:37'),
+(8, 3, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 00:33:39'),
+(9, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 00:33:44'),
+(10, 3, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 00:33:45'),
+(11, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 01:11:34'),
+(12, 4, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 01:11:41'),
+(13, 2, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 01:11:53'),
+(14, 1, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 01:46:49'),
+(15, 1, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 01:46:52'),
+(16, 1, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 01:52:54'),
+(17, 1, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:08'),
+(18, 2, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:08'),
+(19, 4, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:08'),
+(20, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:08'),
+(21, 1, 'en preparacion', '0000-00-00', '00:00:00', '2025-11-06 02:02:18'),
+(22, 1, 'entregado', '0000-00-00', '00:00:00', '2025-11-06 02:02:22'),
+(23, 3, 'cancelado', '0000-00-00', '00:00:00', '2025-11-06 02:02:31'),
+(24, 5, 'entregado', '0000-00-00', '00:00:00', '2025-11-06 02:02:35'),
+(25, 4, 'entregado', '0000-00-00', '00:00:00', '2025-11-06 02:02:38'),
+(26, 2, 'entregado', '0000-00-00', '00:00:00', '2025-11-06 02:02:42'),
+(27, 1, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:57'),
+(28, 2, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:57'),
+(29, 3, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:57'),
+(30, 4, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:57'),
+(31, 5, 'pendiente', '0000-00-00', '00:00:00', '2025-11-06 02:02:57'),
+(32, 5, 'entregado', '0000-00-00', '00:00:00', '2025-11-06 02:06:02'),
+(33, 3, 'cancelado', '0000-00-00', '00:00:00', '2025-11-06 02:06:15'),
+(34, 4, 'entregado', '0000-00-00', '00:00:00', '2025-11-06 02:06:25'),
+(35, 2, 'en preparacion', '0000-00-00', '00:00:00', '2025-11-06 02:20:07');
 
 -- --------------------------------------------------------
 
@@ -357,7 +357,7 @@ CREATE TABLE `mesas` (
 --
 
 INSERT INTO `mesas` (`id_mesa`, `numero_mesa`, `capacidad`, `ubicacion`, `estado`) VALUES
-(1, 1, 0, NULL, 'ocupada'),
+(1, 1, 0, NULL, 'libre'),
 (2, 2, 0, NULL, 'libre'),
 (3, 3, 0, NULL, 'libre'),
 (4, 4, 0, NULL, 'libre'),
@@ -828,19 +828,19 @@ CREATE TABLE `vista_detalle_pedidos` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `vista_historial_pedidos`
+-- Estructura Stand-in para la vista `vista_historial_pedidos`
+-- (Véase abajo para la vista actual)
 --
-
 CREATE TABLE `vista_historial_pedidos` (
-  `id_historial` int(11) DEFAULT NULL,
-  `id_pedido` int(11) DEFAULT NULL,
-  `fecha` date DEFAULT NULL,
-  `hora` time DEFAULT NULL,
-  `nombre_usuario` varchar(100) DEFAULT NULL,
-  `apellido_usuario` varchar(100) DEFAULT NULL,
-  `estado` enum('pendiente','en preparacion','entregado','cancelado') DEFAULT NULL,
-  `fecha_estado` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+`id_historial` int(11)
+,`id_pedido` int(11)
+,`fecha` date
+,`hora` time
+,`nombre_usuario` varchar(100)
+,`apellido_usuario` varchar(100)
+,`estado` enum('pendiente','en preparacion','entregado','cancelado')
+,`fecha_estado` datetime
+);
 
 -- --------------------------------------------------------
 
@@ -867,18 +867,18 @@ CREATE TABLE `vista_movimientos_inventario` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `vista_pedidos_usuarios`
+-- Estructura Stand-in para la vista `vista_pedidos_usuarios`
+-- (Véase abajo para la vista actual)
 --
-
 CREATE TABLE `vista_pedidos_usuarios` (
-  `id_pedido` int(11) DEFAULT NULL,
-  `nombre` varchar(100) DEFAULT NULL,
-  `apellido` varchar(100) DEFAULT NULL,
-  `fecha` date DEFAULT NULL,
-  `hora` time DEFAULT NULL,
-  `total` bigint(20) DEFAULT NULL,
-  `estado` enum('entregado','cancelado','pendiente','en preparacion') DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+`id_pedido` int(11)
+,`nombre` varchar(100)
+,`apellido` varchar(100)
+,`fecha` date
+,`hora` time
+,`total` bigint(20)
+,`estado` enum('entregado','cancelado','pendiente','en preparacion')
+);
 
 -- --------------------------------------------------------
 
@@ -916,11 +916,29 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
+-- Estructura para la vista `vista_historial_pedidos`
+--
+DROP TABLE IF EXISTS `vista_historial_pedidos`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_historial_pedidos`  AS SELECT `h`.`id_historial` AS `id_historial`, `h`.`id_pedido` AS `id_pedido`, `h`.`fecha` AS `fecha`, `h`.`hora` AS `hora`, `u`.`nombre` AS `nombre_usuario`, `u`.`apellido` AS `apellido_usuario`, `h`.`estado` AS `estado`, `h`.`fecha_cambio` AS `fecha_estado` FROM ((`historial_pedidos` `h` join `pedidos` `p` on(`h`.`id_pedido` = `p`.`id_pedido`)) join `usuarios` `u` on(`p`.`cod_usuario` = `u`.`id_usuario`)) ;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura para la vista `vista_movimientos_inventario`
 --
 DROP TABLE IF EXISTS `vista_movimientos_inventario`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_movimientos_inventario`  AS SELECT 'ENTRADA' AS `tipo_movimiento`, `e`.`id_entrada` AS `id_movimiento`, `e`.`fecha_entrada` AS `fecha`, `p`.`nombre` AS `producto`, `p`.`id_producto` AS `id_producto`, `e`.`cantidad` AS `cantidad`, `e`.`precio_compra` AS `precio`, `e`.`cantidad`* `e`.`precio_compra` AS `total`, concat(`u`.`nombre`,' ',`u`.`apellido`) AS `usuario`, ifnull(`prov`.`nombre`,'Sin proveedor') AS `proveedor`, `e`.`numero_lote` AS `lote`, `e`.`tipo_entrada` AS `tipo`, `e`.`observaciones` AS `descripcion` FROM (((`entradas_inventario` `e` join `productos` `p` on(`e`.`cod_producto` = `p`.`id_producto`)) join `usuarios` `u` on(`e`.`id_usuario` = `u`.`id_usuario`)) left join `proveedores` `prov` on(`e`.`id_proveedor` = `prov`.`id_proveedor`))union all select 'SALIDA' AS `tipo_movimiento`,`s`.`id_salida` AS `id_movimiento`,concat(`s`.`fecha`,' ',ifnull(`s`.`hora`,'00:00:00')) AS `fecha`,`p`.`nombre` AS `producto`,`p`.`id_producto` AS `id_producto`,`s`.`cantidad` AS `cantidad`,`p`.`precio` AS `precio`,`s`.`cantidad` * `p`.`precio` AS `total`,concat(`u`.`nombre`,' ',`u`.`apellido`) AS `usuario`,case when `s`.`tipo_salida` = 'venta' then 'Venta' when `s`.`tipo_salida` = 'merma' then concat('Merma: ',ifnull(`s`.`motivo_merma`,'No especificado')) else `s`.`tipo_salida` end AS `proveedor`,`s`.`numero_lote` AS `lote`,`s`.`tipo_salida` AS `tipo`,`s`.`descripcion_salida` AS `descripcion` from ((`salida` `s` join `productos` `p` on(`s`.`cod_producto` = `p`.`id_producto`)) join `usuarios` `u` on(`s`.`id_usuario` = `u`.`id_usuario`)) order by `fecha` desc  ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `vista_pedidos_usuarios`
+--
+DROP TABLE IF EXISTS `vista_pedidos_usuarios`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_pedidos_usuarios`  AS SELECT `p`.`id_pedido` AS `id_pedido`, `u`.`nombre` AS `nombre`, `u`.`apellido` AS `apellido`, `p`.`fecha` AS `fecha`, `p`.`hora` AS `hora`, `p`.`total` AS `total`, `p`.`estado` AS `estado` FROM (`pedidos` `p` join `usuarios` `u` on(`p`.`cod_usuario` = `u`.`id_usuario`)) ;
 
 -- --------------------------------------------------------
 
@@ -934,6 +952,12 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `alertas`
+--
+ALTER TABLE `alertas`
+  ADD PRIMARY KEY (`id_alerta`);
 
 --
 -- Indices de la tabla `categorias`
@@ -967,6 +991,19 @@ ALTER TABLE `entradas_inventario`
   ADD KEY `id_usuario` (`id_usuario`);
 
 --
+-- Indices de la tabla `historial_pedidos`
+--
+ALTER TABLE `historial_pedidos`
+  ADD PRIMARY KEY (`id_historial`),
+  ADD KEY `fk_historial_pedido` (`id_pedido`);
+
+--
+-- Indices de la tabla `insumos`
+--
+ALTER TABLE `insumos`
+  ADD PRIMARY KEY (`id_insumo`);
+
+--
 -- Indices de la tabla `mesas`
 --
 ALTER TABLE `mesas`
@@ -983,7 +1020,8 @@ ALTER TABLE `pagos_restaurante`
 -- Indices de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  ADD PRIMARY KEY (`id_pedido`);
+  ADD PRIMARY KEY (`id_pedido`),
+  ADD KEY `fk_pedidos_usuario` (`cod_usuario`);
 
 --
 -- Indices de la tabla `productos`
@@ -1006,6 +1044,21 @@ ALTER TABLE `reservas`
   ADD KEY `fk_reservas_usuarios` (`id_usuario`);
 
 --
+-- Indices de la tabla `salida`
+--
+ALTER TABLE `salida`
+  ADD PRIMARY KEY (`id_salida`),
+  ADD KEY `fk_salida_usuario` (`id_usuario`),
+  ADD KEY `fk_salida_producto` (`cod_producto`),
+  ADD KEY `fk_salida_pedido` (`id_pedido`);
+
+--
+-- Indices de la tabla `subcategorias_insumos`
+--
+ALTER TABLE `subcategorias_insumos`
+  ADD PRIMARY KEY (`id_subcategoria`);
+
+--
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
@@ -1014,6 +1067,12 @@ ALTER TABLE `usuarios`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `alertas`
+--
+ALTER TABLE `alertas`
+  MODIFY `id_alerta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
@@ -1038,6 +1097,18 @@ ALTER TABLE `detalle_pedido_restaurante`
 --
 ALTER TABLE `entradas_inventario`
   MODIFY `id_entrada` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `historial_pedidos`
+--
+ALTER TABLE `historial_pedidos`
+  MODIFY `id_historial` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT de la tabla `insumos`
+--
+ALTER TABLE `insumos`
+  MODIFY `id_insumo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `mesas`
@@ -1076,6 +1147,18 @@ ALTER TABLE `reservas`
   MODIFY `id_reserva` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
+-- AUTO_INCREMENT de la tabla `salida`
+--
+ALTER TABLE `salida`
+  MODIFY `id_salida` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `subcategorias_insumos`
+--
+ALTER TABLE `subcategorias_insumos`
+  MODIFY `id_subcategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
@@ -1108,10 +1191,22 @@ ALTER TABLE `entradas_inventario`
   ADD CONSTRAINT `entradas_inventario_ibfk_3` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
 
 --
+-- Filtros para la tabla `historial_pedidos`
+--
+ALTER TABLE `historial_pedidos`
+  ADD CONSTRAINT `fk_historial_pedido` FOREIGN KEY (`id_pedido`) REFERENCES `pedidos` (`id_pedido`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `pagos_restaurante`
 --
 ALTER TABLE `pagos_restaurante`
   ADD CONSTRAINT `fk_pagos_mesa` FOREIGN KEY (`id_mesa`) REFERENCES `mesas` (`id_mesa`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `pedidos`
+--
+ALTER TABLE `pedidos`
+  ADD CONSTRAINT `fk_pedidos_usuario` FOREIGN KEY (`cod_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `productos`
@@ -1124,6 +1219,14 @@ ALTER TABLE `productos`
 --
 ALTER TABLE `reservas`
   ADD CONSTRAINT `fk_reservas_usuarios` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `salida`
+--
+ALTER TABLE `salida`
+  ADD CONSTRAINT `fk_salida_pedido` FOREIGN KEY (`id_pedido`) REFERENCES `pedidos` (`id_pedido`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_salida_producto` FOREIGN KEY (`cod_producto`) REFERENCES `productos` (`id_producto`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_salida_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
