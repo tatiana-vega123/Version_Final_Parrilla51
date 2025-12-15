@@ -1,10 +1,11 @@
 from flask import Blueprint, render_template, send_file, request, session, redirect, url_for, flash
+from __init__ import mysql
 import pandas as pd
 from fpdf import FPDF
 from io import BytesIO
-import mysql.connector
 from datetime import datetime
 import os
+
 
 # =====================
 # CONEXIÓN DIRECTA

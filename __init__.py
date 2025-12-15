@@ -1,14 +1,18 @@
 from flask import Flask
 from flask_mail import Mail
 from itsdangerous import URLSafeTimedSerializer
+from flask_mysqldb import MySQL
 import pymysql
 import os
 
 # 🔧 Fix MySQL para Railway
 pymysql.install_as_MySQLdb()
 
+# 🔌 Extensiones globales
+mysql = MySQL()
 mail = Mail()
 serializer = URLSafeTimedSerializer("pinchellave")
+
 
 def create_app():
     app = Flask(__name__, template_folder="template")
@@ -20,6 +24,8 @@ def create_app():
     app.config['MYSQL_PASSWORD'] = os.environ.get('MYSQLPASSWORD', '')
     app.config['MYSQL_DB'] = os.environ.get('MYSQLDATABASE', 'parrilla51')
     app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+
+    mysql.init_app(app)   # 🔥 ESTA LÍNEA ERA CLAVE
 
     # ------------------ Configuración Correo ------------------
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -38,7 +44,13 @@ def create_app():
     mail.init_app(app)
 
     # ------------------ Registrar Blueprints ------------------
-    from routes import auth_routes, dashboard_routes, cliente_routes, admin_routes, empleado_routes
+    from routes import (
+        auth_routes,
+        dashboard_routes,
+        cliente_routes,
+        admin_routes,
+        empleado_routes
+    )
     from routes.reportes import reportes_bp
 
     auth_routes.init_app(app)

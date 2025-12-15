@@ -1,12 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, jsonify
-from flask_mysqldb import MySQL, MySQLdb
-from MySQLdb import IntegrityError
+from __init__ import mysql
 import MySQLdb.cursors
+from MySQLdb import IntegrityError
 from datetime import date, datetime
 import json
 from werkzeug.security import check_password_hash, generate_password_hash
-
-from __init__ import mysql
 
 empleado_bp = Blueprint('empleado', __name__)
 
