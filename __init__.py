@@ -12,18 +12,17 @@ mysql = MySQL()
 mail = Mail()
 serializer = URLSafeTimedSerializer(os.environ.get("SECRET_KEY", "pinchellave"))
 
-
 def create_app():
     app = Flask(__name__, template_folder="template")
     app.secret_key = os.environ.get("SECRET_KEY", "pinchellave")
 
     # ------------------ CONFIGURACIÓN MYSQL (RAILWAY) ------------------
     # Usamos os.getenv() para evitar KeyError si falta alguna variable
-    app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'mysql.railway.internal')  # Valor por defecto 'mysql.railway.internal'
-    app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'root')      # Valor por defecto 'root'
-    app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', '')  # Valor vacío por defecto
-    app.config['MYSQL_DB'] = os.getenv('MYSQL_DATABASE', 'parrilla51')  # Valor por defecto
-    app.config['MYSQL_PORT'] = int(os.getenv('MYSQL_PORT', 3306))  # 3306 es el valor por defecto
+    app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'mysql.railway.internal')  # Valor correcto para Railway
+    app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'root')  # Usuario 'root' por defecto
+    app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', '')  # Aquí leemos la contraseña de MYSQL
+    app.config['MYSQL_DB'] = os.getenv('MYSQL_DATABASE', 'parrilla51')  # Nombre de la base de datos
+    app.config['MYSQL_PORT'] = int(os.getenv('MYSQL_PORT', 3306))  # Puerto de MySQL
     app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
     mysql.init_app(app)  # ✅ Inicializar MySQL
