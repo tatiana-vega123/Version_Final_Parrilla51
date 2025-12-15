@@ -18,11 +18,11 @@ def create_app():
 
     # ------------------ CONFIGURACIÓN MYSQL (RAILWAY) ------------------
     # Usamos os.getenv() para evitar KeyError si falta alguna variable
-    app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'mysql.railway.internal')  # Valor correcto para Railway
-    app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'root')  # Usuario 'root' por defecto
-    app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', '')  # Aquí leemos la contraseña de MYSQL
+    app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'mysql.railway.internal')  # Dirección correcta del host
+    app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'root')  # Usuario 'root'
+    app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', 'UBoOKapMxkCvNzRUdLnXZwMdzMmlSdel')  # Contraseña de la base de datos directamente
     app.config['MYSQL_DB'] = os.getenv('MYSQL_DATABASE', 'parrilla51')  # Nombre de la base de datos
-    app.config['MYSQL_PORT'] = int(os.getenv('MYSQL_PORT', 3306))  # Puerto de MySQL
+    app.config['MYSQL_PORT'] = int(os.getenv('MYSQL_PORT', 3306))  # Puerto por defecto
     app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
     mysql.init_app(app)  # ✅ Inicializar MySQL
