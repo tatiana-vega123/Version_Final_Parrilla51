@@ -1,5 +1,5 @@
 Flask
-flask-mysqldb
 flask-mail
 itsdangerous
 gunicorn
+PyMySQL
