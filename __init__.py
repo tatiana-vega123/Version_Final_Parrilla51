@@ -22,9 +22,10 @@ def create_app():
     app.config['MYSQL_HOST'] = os.environ['MYSQLHOST']
     app.config['MYSQL_USER'] = os.environ['MYSQLUSER']
     app.config['MYSQL_PASSWORD'] = os.environ['MYSQLPASSWORD']
-    app.config['MYSQL_DB'] = os.environ['MYSQLDATABASE']
+    app.config['MYSQL_DB'] = os.environ['MYSQL_DATABASE']
     app.config['MYSQL_PORT'] = int(os.environ.get('MYSQLPORT', 3306))
     app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+
 
     mysql.init_app(app)  # ✅ Inicializar MySQL
 
