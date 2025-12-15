@@ -19,8 +19,8 @@ def create_app():
 
     # ------------------ CONFIGURACIÓN MYSQL (RAILWAY) ------------------
     # Usamos os.getenv() para evitar KeyError si falta alguna variable
-    app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'localhost')  # Valor por defecto 'localhost' si no se encuentra
-    app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'root')      # Valor por defecto 'root' si no se encuentra
+    app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'mysql.railway.internal')  # Valor por defecto 'mysql.railway.internal'
+    app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'root')      # Valor por defecto 'root'
     app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', '')  # Valor vacío por defecto
     app.config['MYSQL_DB'] = os.getenv('MYSQL_DATABASE', 'parrilla51')  # Valor por defecto
     app.config['MYSQL_PORT'] = int(os.getenv('MYSQL_PORT', 3306))  # 3306 es el valor por defecto
