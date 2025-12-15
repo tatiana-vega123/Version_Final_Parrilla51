@@ -1,12 +1,13 @@
+# __init__.py
+
+import pymysql
+pymysql.install_as_MySQLdb()  # 🔧 FIX obligatorio para Railway
+
 from flask import Flask
 from flask_mail import Mail
 from itsdangerous import URLSafeTimedSerializer
 from flask_mysqldb import MySQL
-import pymysql
 import os
-
-# 🔧 Fix MySQL para Railway
-pymysql.install_as_MySQLdb()
 
 # 🔌 Extensiones globales
 mysql = MySQL()
@@ -25,7 +26,7 @@ def create_app():
     app.config['MYSQL_DB'] = os.environ.get('MYSQLDATABASE', 'parrilla51')
     app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
-    mysql.init_app(app)   # 🔥 ESTA LÍNEA ERA CLAVE
+    mysql.init_app(app)  # ✅ correcto y necesario
 
     # ------------------ Configuración Correo ------------------
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -58,6 +59,7 @@ def create_app():
     cliente_routes.init_app(app)
     admin_routes.init_app(app)
     empleado_routes.init_app(app)
+
     app.register_blueprint(reportes_bp, url_prefix='/reportes')
 
     return app
