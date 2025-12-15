@@ -6,3 +6,4 @@ flask-mail
 itsdangerous
 pandas
 fpdf
+cryptography
