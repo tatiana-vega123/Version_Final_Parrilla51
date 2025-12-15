@@ -1,5 +1,3 @@
-# __init__.py
-
 import pymysql
 pymysql.install_as_MySQLdb()  # 🔧 FIX obligatorio para Railway
 
@@ -17,16 +15,17 @@ serializer = URLSafeTimedSerializer("pinchellave")
 
 def create_app():
     app = Flask(__name__, template_folder="template")
-    app.secret_key = "pinchellave"
+    app.secret_key = os.environ.get("SECRET_KEY", "pinchellave")
 
     # ------------------ Configuración Base de Datos ------------------
     app.config['MYSQL_HOST'] = os.environ.get('MYSQLHOST', 'localhost')
     app.config['MYSQL_USER'] = os.environ.get('MYSQLUSER', 'root')
     app.config['MYSQL_PASSWORD'] = os.environ.get('MYSQLPASSWORD', '')
     app.config['MYSQL_DB'] = os.environ.get('MYSQLDATABASE', 'parrilla51')
+    app.config['MYSQL_PORT'] = int(os.environ.get('MYSQLPORT', 3306))
     app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
-    mysql.init_app(app)  # ✅ correcto y necesario
+    mysql.init_app(app)  # ✅ inicializar MySQL
 
     # ------------------ Configuración Correo ------------------
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
