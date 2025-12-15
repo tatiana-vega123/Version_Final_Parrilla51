@@ -19,11 +19,11 @@ def create_app():
 
     # ------------------ CONFIGURACIÓN MYSQL (RAILWAY) ------------------
     # ❌ SIN localhost, ❌ SIN valores por defecto
-    app.config['MYSQL_HOST'] = os.environ['MYSQLHOST']
-    app.config['MYSQL_USER'] = os.environ['MYSQLUSER']
-    app.config['MYSQL_PASSWORD'] = os.environ['MYSQLPASSWORD']
-    app.config['MYSQL_DB'] = os.environ['MYSQLDATABASE']
-    app.config['MYSQL_PORT'] = int(os.environ.get('MYSQLPORT', 3306))
+    app.config['MYSQL_HOST'] = os.environ['MYSQL_HOST']
+    app.config['MYSQL_USER'] = os.environ['MYSQL_USER']
+    app.config['MYSQL_PASSWORD'] = os.environ['MYSQL_PASSWORD']
+    app.config['MYSQL_DB'] = os.environ['MYSQL_DATABASE']
+    app.config['MYSQL_PORT'] = int(os.environ.get('MYSQL_PORT', 3306))
     app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 
