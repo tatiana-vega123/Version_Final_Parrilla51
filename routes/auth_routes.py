@@ -6,16 +6,15 @@ import uuid
 import socket
 
 # ⏱️ Timeout global para evitar bloqueos SMTP en Railway
-socket.setdefaulttimeout(5)
+socket.setdefaulttimeout(10)
 
 # -------------------- BLUEPRINT --------------------
 auth_bp = Blueprint('auth', __name__)
 
-# -------------------- PÁGINA PRINCIPAL (HOME) --------------------
+# -------------------- HOME --------------------
 @auth_bp.route('/')
 def home():
     return render_template("index.html")
-
 
 # -------------------- LOGIN --------------------
 @auth_bp.route('/login', methods=['GET', 'POST'])
@@ -42,17 +41,15 @@ def login():
 
             flash(f"✅ Bienvenido {user['nombre']} {user['apellido']}", "success")
 
-            if session['rol'] == 'administrador':
+            if user['rol'] == 'administrador':
                 return redirect(url_for('admin.admin_dashboard'))
-            elif session['rol'] == 'empleado':
+            elif user['rol'] == 'empleado':
                 return redirect(url_for('empleado.empleado_dashboard'))
-            elif session['rol'] == 'cliente':
+            else:
                 return redirect(url_for('dashboard.cliente_dashboard'))
-        else:
-            flash("❌ Correo o contraseña incorrectos", "danger")
 
+        flash("❌ Correo o contraseña incorrectos", "danger")
     return render_template("login.html")
-
 
 # -------------------- REGISTRO --------------------
 @auth_bp.route('/registro', methods=['GET', 'POST'])
@@ -62,10 +59,8 @@ def registro():
         correo = request.form['correo']
 
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM usuarios WHERE correo = %s", (correo,))
-        existe = cur.fetchone()
-
-        if existe:
+        cur.execute("SELECT id_usuario FROM usuarios WHERE correo = %s", (correo,))
+        if cur.fetchone():
             flash("⚠️ Este correo ya está registrado", "warning")
             cur.close()
             return redirect(url_for('auth.registro'))
@@ -78,7 +73,7 @@ def registro():
         token = str(uuid.uuid4())
 
         cur.execute("""
-            INSERT INTO usuarios 
+            INSERT INTO usuarios
             (nombre, apellido, telefono, direccion, correo, contraseña, rol, estado, token_activacion)
             VALUES (%s, %s, %s, %s, %s, %s, %s, 'inactivo', %s)
         """, (nombre, apellido, telefono, direccion, correo, password, rol, token))
@@ -88,7 +83,7 @@ def registro():
         try:
             enlace = url_for('auth.activar_cuenta', token=token, _external=True)
             msg = Message(
-                '📧 Activa tu cuenta - Parrilla 51',
+                subject='📧 Activa tu cuenta - Parrilla 51',
                 recipients=[correo]
             )
             msg.body = f"""
@@ -111,28 +106,26 @@ Si no solicitaste este registro, ignora este correo.
 
     return render_template('registro.html')
 
-
 # -------------------- ACTIVAR CUENTA --------------------
 @auth_bp.route('/activar/<token>')
 def activar_cuenta(token):
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM usuarios WHERE token_activacion = %s", (token,))
+    cur.execute("SELECT id_usuario FROM usuarios WHERE token_activacion = %s", (token,))
     user = cur.fetchone()
 
     if user:
         cur.execute("""
-            UPDATE usuarios 
+            UPDATE usuarios
             SET estado = 'activo', token_activacion = NULL
             WHERE id_usuario = %s
         """, (user['id_usuario'],))
         mysql.connection.commit()
         flash("✅ Cuenta activada exitosamente", "success")
     else:
-        flash("❌ El enlace de activación es inválido o ya fue usado", "danger")
+        flash("❌ Enlace inválido o ya usado", "danger")
 
     cur.close()
     return redirect(url_for('auth.login'))
-
 
 # -------------------- OLVIDÉ CONTRASEÑA --------------------
 @auth_bp.route('/forgot_password', methods=['GET', 'POST'])
@@ -141,7 +134,7 @@ def forgot_password():
         correo = request.form['email']
 
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM usuarios WHERE correo = %s", (correo,))
+        cur.execute("SELECT id_usuario FROM usuarios WHERE correo = %s", (correo,))
         user = cur.fetchone()
         cur.close()
 
@@ -151,7 +144,7 @@ def forgot_password():
                 enlace = url_for('auth.reset_password', token=token, _external=True)
 
                 msg = Message(
-                    '🔑 Restablecer contraseña - Parrilla 51',
+                    subject='🔑 Restablecer contraseña - Parrilla 51',
                     recipients=[correo]
                 )
                 msg.body = f"""
@@ -174,8 +167,7 @@ Si no solicitaste este cambio, ignora este mensaje.
 
     return render_template("forgot_password.html")
 
-
-# -------------------- RESTABLECER CONTRASEÑA --------------------
+# -------------------- RESET PASSWORD --------------------
 @auth_bp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
     try:
@@ -194,7 +186,10 @@ def reset_password(token):
 
         hashed = generate_password_hash(password1)
         cur = mysql.connection.cursor()
-        cur.execute("UPDATE usuarios SET contraseña = %s WHERE correo = %s", (hashed, correo))
+        cur.execute(
+            "UPDATE usuarios SET contraseña = %s WHERE correo = %s",
+            (hashed, correo)
+        )
         mysql.connection.commit()
         cur.close()
 
@@ -203,8 +198,7 @@ def reset_password(token):
 
     return render_template("reset_password.html")
 
-
-# -------------------- CERRAR SESIÓN --------------------
+# -------------------- LOGOUT --------------------
 @auth_bp.route('/logout')
 def logout():
     nombre = session.get('nombre', 'Usuario')
@@ -212,7 +206,6 @@ def logout():
     flash(f"👋 Hasta pronto {nombre}", "info")
     return redirect(url_for('auth.login'))
 
-
-# -------------------- REGISTRAR BLUEPRINT --------------------
+# -------------------- REGISTRO BLUEPRINT --------------------
 def init_app(app):
     app.register_blueprint(auth_bp)
