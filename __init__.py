@@ -34,7 +34,7 @@ def create_app():
     app.config['MAIL_USE_TLS'] = True
     app.config['MAIL_USERNAME'] = 'enviodecorreosparrilla51@gmail.com'
     app.config['MAIL_PASSWORD'] = 'tyga bjte atex xajy'
-    app.config['MAIL_DEFAULT_SENDER'] = 'enviodecorreosparrilla51@gmail.com
+    app.config['MAIL_DEFAULT_SENDER'] = 'enviodecorreosparrilla51@gmail.com'
 
     mail.init_app(app)
 
