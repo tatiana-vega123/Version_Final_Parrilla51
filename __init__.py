@@ -7,7 +7,6 @@ from itsdangerous import URLSafeTimedSerializer
 from flask_mysqldb import MySQL
 import os
 
-# 🔌 Extensiones
 mysql = MySQL()
 mail = Mail()
 serializer = URLSafeTimedSerializer(os.environ.get("SECRET_KEY", "pinchellave"))
@@ -16,7 +15,7 @@ def create_app():
     app = Flask(__name__, template_folder="template")
     app.secret_key = os.environ.get("SECRET_KEY", "pinchellave")
 
-    # ------------------ MYSQL (RAILWAY REAL) ------------------
+    # 🔥 MYSQL (VARIABLES CORRECTAS DE RAILWAY)
     app.config['MYSQL_HOST'] = os.environ.get('MYSQL_HOST')
     app.config['MYSQL_USER'] = os.environ.get('MYSQL_USER')
     app.config['MYSQL_PASSWORD'] = os.environ.get('MYSQL_PASSWORD')
@@ -26,23 +25,17 @@ def create_app():
 
     mysql.init_app(app)
 
-    # ------------------ CORREO ------------------
+    # 📧 CORREO
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     app.config['MAIL_PORT'] = 587
     app.config['MAIL_USE_TLS'] = True
-    app.config['MAIL_USERNAME'] = os.environ.get(
-        'MAIL_USERNAME',
-        'enviodecorreosparrilla51@gmail.com'
-    )
-    app.config['MAIL_PASSWORD'] = os.environ.get(
-        'MAIL_PASSWORD',
-        'tyga bjte atex xajy'
-    )
-    app.config['MAIL_DEFAULT_SENDER'] = 'enviodecorreosparrilla51@gmail.com'
+    app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+    app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+    app.config['MAIL_DEFAULT_SENDER'] = app.config['MAIL_USERNAME']
 
     mail.init_app(app)
 
-    # ------------------ BLUEPRINTS ------------------
+    # 📦 BLUEPRINTS
     from routes import (
         auth_routes,
         dashboard_routes,
