@@ -269,8 +269,8 @@ CREATE TABLE `historial_pedidos` (
   `id_historial` int(11) NOT NULL,
   `id_pedido` int(11) NOT NULL,
   `estado` enum('pendiente','en preparacion','entregado','cancelado') NOT NULL,
-  `fecha` date NOT NULL DEFAULT curdate(),
-  `hora` time NOT NULL DEFAULT curtime(),
+  `fecha` date NOT NULL,
+  `hora` time NOT NULL,
   `fecha_cambio` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
