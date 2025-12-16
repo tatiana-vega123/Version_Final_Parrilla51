@@ -9,23 +9,23 @@ import os
 
 mysql = MySQL()
 mail = Mail()
-serializer = URLSafeTimedSerializer(os.environ.get("SECRET_KEY", "pinchellave"))
 
 def create_app():
     app = Flask(__name__, template_folder="template")
     app.secret_key = os.environ.get("SECRET_KEY", "pinchellave")
 
-    # 🔥 MYSQL (VARIABLES CORRECTAS DE RAILWAY)
-    app.config['MYSQL_HOST'] = os.environ.get('MYSQL_HOST')
-    app.config['MYSQL_USER'] = os.environ.get('MYSQL_USER')
-    app.config['MYSQL_PASSWORD'] = os.environ.get('MYSQL_PASSWORD')
-    app.config['MYSQL_DB'] = os.environ.get('MYSQL_DATABASE')
-    app.config['MYSQL_PORT'] = int(os.environ.get('MYSQL_PORT', 3306))
+    # ---------- MYSQL (RAILWAY) ----------
+    app.config['MYSQL_HOST'] = os.environ.get('MYSQLHOST')
+    app.config['MYSQL_USER'] = os.environ.get('MYSQLUSER')
+    app.config['MYSQL_PASSWORD'] = os.environ.get('MYSQLPASSWORD')
+    app.config['MYSQL_DB'] = os.environ.get('MYSQLDATABASE')
+    app.config['MYSQL_PORT'] = int(os.environ.get('MYSQLPORT', 3306))
     app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+    app.config['MYSQL_CONNECT_TIMEOUT'] = 10
 
     mysql.init_app(app)
 
-    # 📧 CORREO
+    # ---------- MAIL ----------
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     app.config['MAIL_PORT'] = 587
     app.config['MAIL_USE_TLS'] = True
@@ -35,7 +35,7 @@ def create_app():
 
     mail.init_app(app)
 
-    # 📦 BLUEPRINTS
+    # ---------- BLUEPRINTS ----------
     from routes import (
         auth_routes,
         dashboard_routes,
