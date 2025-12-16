@@ -25,6 +25,13 @@ def create_app():
     app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
     mysql.init_app(app)
+    
+        # 🔧 CREAR BASE DE DATOS SI NO EXISTE (SOLO 1 VEZ)
+    with app.app_context():
+        cur = mysql.connection.cursor()
+        cur.execute("CREATE DATABASE IF NOT EXISTS parrilla51")
+        cur.close()
+
 
     # ------------------ CORREO ------------------
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
