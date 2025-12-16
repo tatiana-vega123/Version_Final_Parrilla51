@@ -3,6 +3,10 @@ from __init__ import mysql, mail, serializer
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Message
 import uuid
+import socket
+
+# ⏱️ Timeout global para evitar bloqueos SMTP en Railway
+socket.setdefaulttimeout(5)
 
 # -------------------- BLUEPRINT --------------------
 auth_bp = Blueprint('auth', __name__)
@@ -10,7 +14,6 @@ auth_bp = Blueprint('auth', __name__)
 # -------------------- PÁGINA PRINCIPAL (HOME) --------------------
 @auth_bp.route('/')
 def home():
-    """Página principal con información del restaurante"""
     return render_template("index.html")
 
 
@@ -57,29 +60,26 @@ def registro():
     if request.method == 'POST':
         nombre = request.form['nombre']
         correo = request.form['correo']
-        
-        # Verificar si el correo ya existe
+
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM usuarios WHERE correo = %s", (correo,))
         existe = cur.fetchone()
-        
+
         if existe:
             flash("⚠️ Este correo ya está registrado", "warning")
+            cur.close()
             return redirect(url_for('auth.registro'))
-        
+
         apellido = request.form['apellido']
         telefono = request.form['telefono']
         direccion = request.form['direccion']
         password = generate_password_hash(request.form['password'])
-        
-        # IMPORTANTE: Siempre asignar rol 'cliente' por defecto para registros públicos
-        # No permitir que el usuario elija su rol desde el formulario
         rol = 'cliente'
-        
         token = str(uuid.uuid4())
 
         cur.execute("""
-            INSERT INTO usuarios (nombre, apellido, telefono, direccion, correo, contraseña, rol, estado, token_activacion)
+            INSERT INTO usuarios 
+            (nombre, apellido, telefono, direccion, correo, contraseña, rol, estado, token_activacion)
             VALUES (%s, %s, %s, %s, %s, %s, %s, 'inactivo', %s)
         """, (nombre, apellido, telefono, direccion, correo, password, rol, token))
         mysql.connection.commit()
@@ -87,15 +87,16 @@ def registro():
 
         try:
             enlace = url_for('auth.activar_cuenta', token=token, _external=True)
-            msg = Message('📧 Activa tu cuenta - Parrilla 51',
-                          sender='enviodecorreosparrilla51@gmail.com',
-                          recipients=[correo])
+            msg = Message(
+                '📧 Activa tu cuenta - Parrilla 51',
+                recipients=[correo]
+            )
             msg.body = f"""
 Hola {nombre},
 
 Gracias por registrarte en Parrilla 51 🍖
 
-Haz clic en el siguiente enlace para activar tu cuenta:
+Activa tu cuenta aquí:
 {enlace}
 
 Si no solicitaste este registro, ignora este correo.
@@ -103,8 +104,8 @@ Si no solicitaste este registro, ignora este correo.
             mail.send(msg)
             flash("✅ Registro exitoso. Revisa tu correo para activar tu cuenta", "success")
         except Exception as e:
-            print(f"Error enviando correo: {e}")
-            flash("⚠️ Usuario creado pero no se pudo enviar el correo de activación", "warning")
+            print("Error enviando correo:", e)
+            flash("⚠️ Usuario creado, pero no se pudo enviar el correo", "warning")
 
         return redirect(url_for('auth.login'))
 
@@ -120,14 +121,15 @@ def activar_cuenta(token):
 
     if user:
         cur.execute("""
-            UPDATE usuarios SET estado = 'activo', token_activacion = NULL
+            UPDATE usuarios 
+            SET estado = 'activo', token_activacion = NULL
             WHERE id_usuario = %s
         """, (user['id_usuario'],))
         mysql.connection.commit()
-        flash("✅ Cuenta activada exitosamente. Ya puedes iniciar sesión", "success")
+        flash("✅ Cuenta activada exitosamente", "success")
     else:
         flash("❌ El enlace de activación es inválido o ya fue usado", "danger")
-    
+
     cur.close()
     return redirect(url_for('auth.login'))
 
@@ -141,31 +143,33 @@ def forgot_password():
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM usuarios WHERE correo = %s", (correo,))
         user = cur.fetchone()
+        cur.close()
 
         if user:
             try:
                 token = serializer.dumps(correo, salt='password-reset-salt')
                 enlace = url_for('auth.reset_password', token=token, _external=True)
 
-                msg = Message('🔑 Restablecer contraseña - Parrilla 51',
-                              sender='enviodecorreosparrilla51@gmail.com',
-                              recipients=[correo])
-                msg.body = f"""Hola,
+                msg = Message(
+                    '🔑 Restablecer contraseña - Parrilla 51',
+                    recipients=[correo]
+                )
+                msg.body = f"""
+Hola,
 
-Para restablecer tu contraseña, haz clic en el siguiente enlace:
+Para restablecer tu contraseña, haz clic aquí:
 {enlace}
 
-Si no solicitaste este cambio, ignora este mensaje."""
+Si no solicitaste este cambio, ignora este mensaje.
+"""
                 mail.send(msg)
-
-                flash("✅ Correo de recuperación enviado exitosamente", "success")
+                flash("✅ Correo de recuperación enviado", "success")
             except Exception as e:
-                flash("❌ Error al enviar el correo. Intenta nuevamente", "danger")
-                print(f"Error: {e}")
+                print("Error enviando correo:", e)
+                flash("⚠️ No se pudo enviar el correo en este momento", "warning")
         else:
             flash("⚠️ El correo no está registrado", "warning")
-        
-        cur.close()
+
         return redirect(url_for('auth.login'))
 
     return render_template("forgot_password.html")
@@ -205,7 +209,7 @@ def reset_password(token):
 def logout():
     nombre = session.get('nombre', 'Usuario')
     session.clear()
-    flash(f"👋 Hasta pronto {nombre}. Sesión cerrada correctamente", "info")
+    flash(f"👋 Hasta pronto {nombre}", "info")
     return redirect(url_for('auth.login'))
 
 
