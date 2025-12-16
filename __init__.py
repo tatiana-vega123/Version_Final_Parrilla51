@@ -29,14 +29,16 @@ def create_app():
     mysql.init_app(app)
 
     # ---------- MAIL ----------
-    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-    app.config['MAIL_PORT'] = 587
-    app.config['MAIL_USE_TLS'] = True
-    app.config['MAIL_USERNAME'] = 'enviodecorreosparrilla51@gmail.com'
-    app.config['MAIL_PASSWORD'] = 'tyga bjte atex xajy'
-    app.config['MAIL_DEFAULT_SENDER'] = 'enviodecorreosparrilla51@gmail.com'
-
+    app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER')
+    app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', 587))
+    app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS') == 'true'
+    app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+    app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+    app.config['MAIL_DEFAULT_SENDER'] = app.config['MAIL_USERNAME']
+    app.config['MAIL_TIMEOUT'] = 5
+    
     mail.init_app(app)
+
 
     # ---------- BLUEPRINTS ----------
     from routes import (
